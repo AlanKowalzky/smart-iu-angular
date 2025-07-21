@@ -1,1 +1,7 @@
-<p>card works!</p>
+<div class="card">
+  <h3>{{ card.title }}</h3>
+  <div *ngFor="let item of card.items">
+    <app-device *ngIf="item.type === 'device'" [device]="item"></app-device>
+    <app-sensor *ngIf="item.type === 'sensor'" [sensor]="item"></app-sensor>
+  </div>
+</div>

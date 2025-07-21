@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Card } from '../models';
+import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-card-list',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, CardComponent],
   templateUrl: './card-list.component.html',
-  styleUrl: './card-list.component.scss'
+  styleUrls: ['./card-list.component.scss']
 })
 export class CardListComponent {
-
+  @Input() cards: Card[] = [];
 }

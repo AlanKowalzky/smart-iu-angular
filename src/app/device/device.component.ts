@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { Device } from '../models';
 
 @Component({
   selector: 'app-device',
   standalone: true,
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './device.component.html',
-  styleUrl: './device.component.scss'
+  styleUrls: ['./device.component.scss']
 })
 export class DeviceComponent {
-
+  @Input() device!: Device;
 }

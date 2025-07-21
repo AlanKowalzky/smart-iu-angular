@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { Sensor } from '../models';
 
 @Component({
   selector: 'app-sensor',
-  standalone: true,
-  imports: [],
   templateUrl: './sensor.component.html',
-  styleUrl: './sensor.component.scss'
+  styleUrls: ['./sensor.component.scss'],
+  standalone: true,
+  imports: [MatIconModule]
 })
 export class SensorComponent {
-
+  @Input() sensor!: Sensor;
 }

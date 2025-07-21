@@ -1,1 +1,9 @@
-<p>dashboard works!</p>
+<app-tab-switcher
+  [tabs]="tabs"
+  [activeTabId]="activeTabId"
+  (tabChange)="onTabChange($event)">
+</app-tab-switcher>
+
+<app-card-list
+  [cards]="activeTab?.cards || []">
+</app-card-list>
