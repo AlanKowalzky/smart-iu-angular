@@ -4,4 +4,9 @@
     <app-device *ngIf="item.type === 'device'" [device]="item"></app-device>
     <app-sensor *ngIf="item.type === 'sensor'" [sensor]="item"></app-sensor>
   </div>
+  <div *ngIf="hasGroupSwitch">
+    <mat-slide-toggle [checked]="groupSwitchState" (change)="onGroupSwitchChange($event.checked)">
+      Wszystkie urządzenia
+    </mat-slide-toggle>
+  </div>
 </div>

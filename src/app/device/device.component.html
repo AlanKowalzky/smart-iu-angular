@@ -1,5 +1,10 @@
-<div>
-  <mat-icon>{{ device.icon }}</mat-icon>
+<div [appActiveDevice]="device.state">
+  <mat-icon (click)="!useSwitch && toggleDevice()" [class.active]="device.state">
+    {{ device.icon }}
+  </mat-icon>
   <span>{{ device.label }}</span>
-  <span>{{ device.state ? 'ON' : 'OFF' }}</span>
+  <ng-container *ngIf="useSwitch">
+    <mat-slide-toggle [checked]="device.state" (change)="stateChange.emit($event.checked)">
+    </mat-slide-toggle>
+  </ng-container>
 </div>
