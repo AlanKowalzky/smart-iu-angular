@@ -1,0 +1,14 @@
+<div class="item-icon" [appActiveDevice]="device.state">
+  <span class="material-icons-outlined">{{ device.icon }}</span>
+</div>
+<div class="item-details">
+  <span class="item-label">{{ device.label }}</span>
+</div>
+<div class="item-control">
+  <input
+    type="checkbox"
+    class="device-toggle"
+    [ngModel]="device.state"
+    (ngModelChange)="onToggle()"
+  />
+</div>

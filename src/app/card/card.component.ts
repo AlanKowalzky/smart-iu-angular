@@ -2,13 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Card, CardItem, Device, Sensor } from '../models';
 import { FormsModule } from '@angular/forms';
-import { SensorValuePipe } from '../sensor-value.pipe';
-import { ActiveDeviceDirective } from '../active-device.directive';
+import { DeviceItemComponent } from '../device-item/device-item.component';
+import { SensorItemComponent } from '../sensor-item/sensor-item.component';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule, FormsModule, SensorValuePipe, ActiveDeviceDirective],
+  imports: [CommonModule, FormsModule, DeviceItemComponent, SensorItemComponent],
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
 })

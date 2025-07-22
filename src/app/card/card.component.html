@@ -2,30 +2,26 @@
   <div class="card-header">
     <h3 class="card-title">{{ card.title }}</h3>
     <!-- Group toggle for cards with multiple devices -->
-    <div *ngIf="devices.length > 1" class="group-toggle">
+    <div *ngIf="devices.length > 1 && card.layout !== 'singleDevice'" class="group-toggle">
       <label>
-        Wszystkie urządzenia
+        All
         <input type="checkbox" [(ngModel)]="groupToggleState" (ngModelChange)="onGroupToggleChange()">
       </label>
     </div>
   </div>
 
   <div class="items-container">
-    <ng-container *ngFor="let item of card.items">
-      <!-- SENSOR TEMPLATE -->
-      <div *ngIf="isSensor(item)" class="item sensor-item">
-        <span class="material-icons-outlined icon">{{ item.icon }}</span>
-        <div class="item-details">
-          <span class="label">{{ item.label }}</span>
-          <span class="value">{{ item.value | sensorValue }}</span>
-        </div>
-      </div>
-
-      <!-- DEVICE TEMPLATE -->
-      <div *ngIf="isDevice(item)" class="item device-item" (click)="onDeviceToggle(item)" [class.active]="item.state">
-        <span class="material-icons-outlined icon" [appActiveDevice]="item.state">{{ item.icon }}</span>
-        <span class="label">{{ item.label }}</span>
-      </div>
-    </ng-container>
+    <!-- The ng-container is good for not adding extra elements to the DOM -->
+    <div *ngFor="let item of card.items" class="item">
+        <app-sensor-item
+          *ngIf="isSensor(item)"
+          [sensor]="item"
+        ></app-sensor-item>
+        <app-device-item
+          *ngIf="isDevice(item)"
+          [device]="item"
+          (toggle)="onDeviceToggle(item)"
+        ></app-device-item>
+    </div>
   </div>
 </div>

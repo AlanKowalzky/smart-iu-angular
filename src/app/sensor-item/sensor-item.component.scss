@@ -1,0 +1,26 @@
+:host {
+  display: contents; /* Pozwala komponentowi zachowywać się jak jego zawartość w kontekście flexbox/grid */
+}
+
+.item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.item-label {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.item-value {
+  font-weight: 500;
+  font-size: 1.1rem;
+}

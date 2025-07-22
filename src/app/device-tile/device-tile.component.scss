@@ -1,0 +1,30 @@
+.device-tile {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  /* Klasa dodawana, gdy urządzenie jest włączone */
+  &.device-on {
+    /* Ładniejszy, rozproszony cień w kolorze akcentu */
+    box-shadow: 0 0 15px 5px rgba(46, 204, 113, 0.4);
+    border: 1px solid var(--accent-color, #2ecc71);
+  }
+}
+
+.device-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.device-name {
+  margin: 0;
+}
+
+.device-icon {
+  color: var(--secondary-color, #333);
+}
