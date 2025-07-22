@@ -1,23 +1,30 @@
-export interface Device {
-  type: 'device';
+export interface SensorValue {
+  amount: number;
+  unit: string;
+}
+
+export interface BaseItem {
+  type: 'sensor' | 'device';
   icon: string;
   label: string;
+}
+
+export interface Sensor extends BaseItem {
+  type: 'sensor';
+  value: SensorValue;
+}
+
+export interface Device extends BaseItem {
+  type: 'device';
   state: boolean;
 }
 
-export interface Sensor {
-  type: 'sensor';
-  icon: string;
-  label: string;
-  value: { amount: number; unit: string; };
-}
-
-export type CardItem = Device | Sensor;
+export type CardItem = Sensor | Device;
 
 export interface Card {
   id: string;
   title: string;
-  layout: 'singleDevice' | 'horizontalLayout' | 'verticalLayout';
+  layout: 'horizontalLayout' | 'verticalLayout' | 'singleDevice';
   items: CardItem[];
 }
 
@@ -25,4 +32,4 @@ export interface Tab {
   id: string;
   title: string;
   cards: Card[];
-} 
+}

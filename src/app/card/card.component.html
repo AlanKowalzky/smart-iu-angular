@@ -1,12 +1,31 @@
-<div class="card">
-  <h3>{{ card.title }}</h3>
-  <div *ngFor="let item of card.items">
-    <app-device *ngIf="item.type === 'device'" [device]="item"></app-device>
-    <app-sensor *ngIf="item.type === 'sensor'" [sensor]="item"></app-sensor>
+<div class="card" [ngClass]="card.layout">
+  <div class="card-header">
+    <h3 class="card-title">{{ card.title }}</h3>
+    <!-- Group toggle for cards with multiple devices -->
+    <div *ngIf="devices.length > 1" class="group-toggle">
+      <label>
+        Wszystkie urządzenia
+        <input type="checkbox" [(ngModel)]="groupToggleState" (ngModelChange)="onGroupToggleChange()">
+      </label>
+    </div>
   </div>
-  <div *ngIf="hasGroupSwitch">
-    <mat-slide-toggle [checked]="groupSwitchState" (change)="onGroupSwitchChange($event.checked)">
-      Wszystkie urządzenia
-    </mat-slide-toggle>
+
+  <div class="items-container">
+    <ng-container *ngFor="let item of card.items">
+      <!-- SENSOR TEMPLATE -->
+      <div *ngIf="isSensor(item)" class="item sensor-item">
+        <span class="material-icons-outlined icon">{{ item.icon }}</span>
+        <div class="item-details">
+          <span class="label">{{ item.label }}</span>
+          <span class="value">{{ item.value | sensorValue }}</span>
+        </div>
+      </div>
+
+      <!-- DEVICE TEMPLATE -->
+      <div *ngIf="isDevice(item)" class="item device-item" (click)="onDeviceToggle(item)" [class.active]="item.state">
+        <span class="material-icons-outlined icon" [appActiveDevice]="item.state">{{ item.icon }}</span>
+        <span class="label">{{ item.label }}</span>
+      </div>
+    </ng-container>
   </div>
 </div>

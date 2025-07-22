@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Tab } from '../models';
 
@@ -7,10 +7,10 @@ import { Tab } from '../models';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './tab-switcher.component.html',
-  styleUrls: ['./tab-switcher.component.scss']
+  styleUrls: ['./tab-switcher.component.scss'],
 })
 export class TabSwitcherComponent {
   @Input() tabs: Tab[] = [];
-  @Input() activeTabId = '';
+  @Input() activeTabId: string = '';
   @Output() tabChange = new EventEmitter<string>();
 }

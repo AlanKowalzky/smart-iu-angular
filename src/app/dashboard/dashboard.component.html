@@ -1,9 +1,7 @@
 <app-tab-switcher
   [tabs]="tabs"
   [activeTabId]="activeTabId"
-  (tabChange)="onTabChange($event)">
-</app-tab-switcher>
+  (tabChange)="onTabChange($event)"
+></app-tab-switcher>
 
-<app-card-list
-  [cards]="activeTab?.cards || []">
-</app-card-list>
+<app-card-list *ngIf="activeTab" [cards]="activeTab.cards"></app-card-list>

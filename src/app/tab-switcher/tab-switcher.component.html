@@ -1,8 +1,9 @@
-<nav>
+<nav class="tab-switcher">
   <button
     *ngFor="let tab of tabs"
     [class.active]="tab.id === activeTabId"
-    (click)="tabChange.emit(tab.id)">
+    (click)="tabChange.emit(tab.id)"
+  >
     {{ tab.title }}
   </button>
 </nav>

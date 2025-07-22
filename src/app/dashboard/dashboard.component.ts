@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MOCK_DATA } from '../mock-data';
 import { Tab } from '../models';
 import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
@@ -7,7 +8,7 @@ import { CardListComponent } from '../card-list/card-list.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [TabSwitcherComponent, CardListComponent],
+  imports: [CommonModule, TabSwitcherComponent, CardListComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

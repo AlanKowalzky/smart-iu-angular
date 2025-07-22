@@ -8,7 +8,7 @@ import { CardComponent } from '../card/card.component';
   standalone: true,
   imports: [CommonModule, CardComponent],
   templateUrl: './card-list.component.html',
-  styleUrls: ['./card-list.component.scss']
+  styleUrls: ['./card-list.component.scss'],
 })
 export class CardListComponent {
   @Input() cards: Card[] = [];
