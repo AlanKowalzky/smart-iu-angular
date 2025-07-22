@@ -34,7 +34,8 @@ export class CardComponent implements OnInit {
 
   private updateGroupToggleState(): void {
     if (this.devices.length > 0) {
-      this.groupToggleState = this.devices.every((d) => d.state);
+      // Zgodnie z wymaganiem: przełącznik jest ON, jeśli PRZYNAJMNIEJ JEDNO urządzenie jest ON.
+      this.groupToggleState = this.devices.some((d) => d.state);
     }
   }
 

@@ -1,1 +1,25 @@
-<p>sidebar works!</p>
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <span class="material-icons-outlined logo-icon">smart_toy</span>
+    <h2 class="logo-text">SmartHome</h2>
+  </div>
+  <button class="toggle-button" (click)="toggleSidebar()">
+    <span class="material-icons-outlined">
+      {{ isCollapsed ? 'arrow_forward_ios' : 'arrow_back_ios' }}
+    </span>
+  </button>
+  <nav class="sidebar-menu">
+    <ul>
+      <li class="menu-item active">
+        <span class="material-icons-outlined">dashboard</span>
+        <a href="#">Dashboard</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-profile">
+      <span class="material-icons-outlined">account_circle</span>
+      <span class="user-name">User Name</span>
+    </div>
+  </div>
+</aside>

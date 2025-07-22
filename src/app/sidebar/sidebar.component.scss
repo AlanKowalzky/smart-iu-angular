@@ -1,0 +1,131 @@
+:host {
+  flex-shrink: 0;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #1e293b;
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: width 0.3s ease;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 12px;
+  border-bottom: 1px solid #334155;
+
+  .logo-icon {
+    font-size: 36px;
+    color: #67e8f9;
+  }
+
+  .logo-text {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f8fafc;
+    white-space: nowrap;
+  }
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  padding-top: 20px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px;
+    margin: 4px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background-color: #334155;
+      color: #f8fafc;
+    }
+
+    &.active {
+      background-color: #3f51b5;
+      color: #fff;
+    }
+  }
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #334155;
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .material-icons-outlined {
+      font-size: 32px;
+    }
+
+    .user-name {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .toggle-button {
+    display: flex;
+    position: absolute;
+    top: 80px;
+    right: -15px;
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    transition: right 0.3s ease;
+
+    .material-icons-outlined {
+      font-size: 16px;
+    }
+  }
+
+  .sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+
+    & > *:not(.toggle-button) {
+      display: none;
+    }
+
+    .toggle-button {
+      right: -25px;
+    }
+  }
+}
