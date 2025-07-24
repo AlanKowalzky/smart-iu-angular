@@ -4,7 +4,7 @@
 }
 
 .sidebar {
-  display: flex;
+
   flex-direction: column;
 
   height: 100%;
@@ -15,7 +15,7 @@
   overflow: hidden;
 
   &.collapsed {
-    width: 80px; // Szerokość zwiniętego paska
+    width: 50px; // Szerokość zwiniętego paska
 
     .sidebar-header h3, .user-details {
       display: none;
@@ -74,16 +74,32 @@
     white-space: nowrap;
 
     i {
+
       margin-right: 15px;
       font-size: 20px;
       width: 24px; // Stała szerokość dla ikon
       text-align: center;
+
+
+    .menu-item.active > a {
+      background-color: #FF0000; /* Czerwony po kliknięciu */
+      /*zmien kolor ikon w linkach*/
+      /* color: #3498db; */
+      color: var(--link-icon-color, #3498db);
+      /*alternatywnie mozesz uzyc zdefiniowanej zmiennej*/
+      /*
+       color: var(--icon-link-color, #3498db);
+      */
     }
 
-    &:hover {
-      background-color: #34495e;
-    }
+
+
+
+
   }
+  /*kolor tekstu linków*/
+  color: var(--link-text-color, #ecf0f1);
+
 }
 
 .spacer {
@@ -120,4 +136,22 @@
 .icon-devices::before { content: '📱'; }
 .icon-scenes::before { content: '🎬'; }
 .icon-about::before { content: 'ℹ️'; }   
+
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 1cm;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.8em;
+
+    .company-name {
+        font-weight: bold;
+        display: block;
+    }
+}
+}
 }

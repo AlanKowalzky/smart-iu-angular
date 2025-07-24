@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: var(--icon-color, #64748b);
   transition: color 0.3s ease;
 }
 

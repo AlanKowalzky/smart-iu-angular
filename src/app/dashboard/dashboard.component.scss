@@ -16,4 +16,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  justify-content: space-between;
+/*zmienilam nazwe klasy na bardziej opisowa*/
+.horizontal-scroll-container {
+  overflow-x: auto; /* Umożliwia przewijanie w poziomie */
+}
 }
