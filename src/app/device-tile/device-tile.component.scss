@@ -1,0 +1,46 @@
+.device-tile {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  /* Klasa dodawana, gdy urządzenie jest włączone */
+  &.device-on {
+    /* Ładniejszy, rozproszony cień w kolorze akcentu */
+    background-color: rgba(46, 204, 113, 0.2); /* Delikatne zielone tło */
+    color: #2c3e50; /* Zielony kolor tekstu */
+    border: 1px solid var(--accent-color, #2ecc71);
+  }
+}
+
+.device-header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.device-name {
+  margin: 0;
+}
+
+.device-icon {
+  color: var(--secondary-color, #333);
+}
+.device-icon.active {
+    color: yellow; /* Ustawia kolor ikony na żółty */
+    text-shadow: 0 0 10px yellow; /* Dodaje efekt świecenia */
+}
+
+/* Kolor ikonki dla włączonego urządzenia */
+.device-tile.device-on .device-icon {
+    color: #2ecc71; /* Stały zielony kolor */
+}
+
+/* Kolor ikonki dla wyłączonego urządzenia */
+.device-tile .device-icon {
+    color: #3498db; /* Stały niebieski kolor */
+}

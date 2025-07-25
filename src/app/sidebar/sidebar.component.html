@@ -1,0 +1,38 @@
+<aside class="sidebar" [@.disabled]="false" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header" >
+    <span class="material-icons-outlined logo-icon">smart_toy</span>
+    <h2 class="logo-text" *ngIf="!isCollapsed">Smart Home</h2>
+  </div>
+  <button class="toggle-button" (click)="toggleSidebar()">
+    <span class="material-icons-outlined">
+      {{ isCollapsed ? 'chevron_right' : 'chevron_left' }}
+    </span>
+  </button>
+  <nav class="sidebar-menu">
+    <ul>
+      <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">        
+        <a routerLink="/dashboard" *ngIf="!isCollapsed"><span class="material-icons-outlined">dashboard</span>Pulpit</a>
+      </li>
+      <li class="menu-item" routerLinkActive="active">
+        <a routerLink="/devices" *ngIf="!isCollapsed"><span class="material-icons-outlined">devices</span>Urządzenia</a>
+      </li>
+      <li class="menu-item" routerLinkActive="active">
+        <a routerLink="/scenes" *ngIf="!isCollapsed"><span class="material-icons-outlined">movie</span>Sceny</a>
+      </li>
+      <li class="menu-item" routerLinkActive="active">
+        <a routerLink="/thermostat" *ngIf="!isCollapsed"><span class="material-icons-outlined">thermostat</span>Termostat</a>
+      </li>
+      <li class="menu-item" routerLinkActive="active">
+        <a routerLink="/about" *ngIf="!isCollapsed"><span class="material-icons-outlined">info</span>O Aplikacji</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+
+    <div class="company-info">
+      <span class="company-name">RS School</span>
+      <span class="copyright">&copy; 2025</span>
+      </div>
+    </div>
+
+</aside>
