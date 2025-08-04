@@ -1,1 +1,125 @@
-import { Component } from '@angular/core';\nimport { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';\nimport { Router } from '@angular/router';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatFormFieldModule } from '@angular/material/form-field';\nimport { MatInputModule } from '@angular/material/input';\nimport { MatButtonModule } from '@angular/material/button';\nimport { CommonModule } from '@angular/common';\nimport { AuthService } from '../services/auth.service';\n\n@Component({\n  selector: 'app-login',\n  standalone: true,\n  imports: [\n    CommonModule,\n    ReactiveFormsModule,\n    MatCardModule,\n    MatFormFieldModule,\n    MatInputModule,\n    MatButtonModule\n  ],\n  template: `\n    <div class=\"login-container\">\n      <mat-card class=\"login-card\">\n        <mat-card-header>\n          <mat-card-title>Smart Home Login</mat-card-title>\n        </mat-card-header>\n        <mat-card-content>\n          <form [formGroup]=\"loginForm\" (ngSubmit)=\"onSubmit()\">\n            <mat-form-field appearance=\"outline\">\n              <mat-label>Username</mat-label>\n              <input matInput formControlName=\"userName\" required>\n            </mat-form-field>\n            \n            <mat-form-field appearance=\"outline\">\n              <mat-label>Password</mat-label>\n              <input matInput type=\"password\" formControlName=\"password\" required>\n            </mat-form-field>\n            \n            <div class=\"error-message\" *ngIf=\"errorMessage\">{{ errorMessage }}</div>\n            \n            <button mat-raised-button color=\"primary\" type=\"submit\" \n                    [disabled]=\"loginForm.invalid || isLoading\">\n              {{ isLoading ? 'Logging in...' : 'Login' }}\n            </button>\n          </form>\n        </mat-card-content>\n      </mat-card>\n    </div>\n  `,\n  styles: [`\n    .login-container {\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      min-height: 100vh;\n      background-color: #f5f5f5;\n    }\n    \n    .login-card {\n      width: 400px;\n      padding: 20px;\n    }\n    \n    mat-form-field {\n      width: 100%;\n      margin-bottom: 16px;\n    }\n    \n    button {\n      width: 100%;\n    }\n    \n    .error-message {\n      color: #f44336;\n      margin-bottom: 16px;\n      text-align: center;\n    }\n  `]\n})\nexport class LoginComponent {\n  loginForm: FormGroup;\n  errorMessage = '';\n  isLoading = false;\n\n  constructor(\n    private fb: FormBuilder,\n    private authService: AuthService,\n    private router: Router\n  ) {\n    this.loginForm = this.fb.group({\n      userName: ['', Validators.required],\n      password: ['', Validators.required]\n    });\n  }\n\n  onSubmit(): void {\n    if (this.loginForm.valid) {\n      this.isLoading = true;\n      this.errorMessage = '';\n      \n      this.authService.login(this.loginForm.value).subscribe({\n        next: () => {\n          this.authService.loadProfile().subscribe({\n            next: () => {\n              this.router.navigate(['/dashboard']);\n            },\n            error: () => {\n              this.errorMessage = 'Unknown error occurred. Please try again later.';\n              this.isLoading = false;\n            }\n          });\n        },\n        error: (error) => {\n          this.isLoading = false;\n          if (error.status === 401) {\n            this.errorMessage = 'Invalid login or password.';\n          } else {\n            this.errorMessage = 'Unknown error occurred. Please try again later.';\n          }\n        }\n      });\n    }\n  }\n}\n
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
+  template: `
+    <div class="login-container">
+      <mat-card class="login-card">
+        <mat-card-header>
+          <mat-card-title>Smart Home Login</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="userName" required>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" required>
+            </mat-form-field>
+            
+            <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+            
+            <button mat-raised-button color="primary" type="submit" 
+                    [disabled]="loginForm.invalid || isLoading">
+              {{ isLoading ? 'Logging in...' : 'Login' }}
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  `,
+  styles: [`
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+    }
+    
+    .login-card {
+      width: 400px;
+      padding: 20px;
+    }
+    
+    mat-form-field {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    
+    button {
+      width: 100%;
+    }
+    
+    .error-message {
+      color: #f44336;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+  `]
+})
+export class LoginComponent {
+  loginForm: FormGroup;
+  errorMessage = '';
+  isLoading = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
+      this.authService.login(this.loginForm.value).subscribe({
+        next: () => {
+          this.authService.loadProfile().subscribe({
+            next: () => {
+              this.router.navigate(['/dashboard']);
+            },
+            error: () => {
+              this.errorMessage = 'Unknown error occurred. Please try again later.';
+              this.isLoading = false;
+            }
+          });
+        },
+        error: (error: unknown) => {
+          this.isLoading = false;
+          if (error && typeof error === 'object' && 'status' in error && error.status === 401) {
+            this.errorMessage = 'Invalid login or password.';
+          } else {
+            this.errorMessage = 'Unknown error occurred. Please try again later.';
+          }
+        }
+      });
+    }
+  }
+}

@@ -1,45 +1,37 @@
 :host {
   display: block;
-  height: 100vh; // Sidebar zajmuje całą wysokość
+  height: 100vh;
 }
 
 .sidebar {
-
+  display: flex;
   flex-direction: column;
-
   height: 100%;
-  width: 250px; // Szerokość rozwiniętego paska
+  width: 250px;
   background-color: var(--secondary-color, #2c3e50);
   color: #ecf0f1;
   transition: width 0.3s ease;
   overflow: hidden;
 
   &.collapsed {
-    width: 50px; // Szerokość zwiniętego paska
+    width: 50px;
 
     .sidebar-header h3, .user-details {
       display: none;
     }
 
-    .toggle-btn {
-
-    .sidebar-header {
-      transition: height 0.3s ease; /* Dodaj animację wysokości */
-    }
-
     .nav-links a span {
-        display: none;
+      display: none;
     }
 
     .nav-links a {
-        justify-content: center;
+      justify-content: center;
     }
   }
 }
 
 .sidebar-header {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
   padding: 20px;
@@ -74,36 +66,21 @@
     white-space: nowrap;
 
     i {
-
       margin-right: 15px;
       font-size: 20px;
-      width: 24px; // Stała szerokość dla ikon
+      width: 24px;
       text-align: center;
-
-
-    .menu-item.active > a {
-      background-color: #FF0000; /* Czerwony po kliknięciu */
-      /*zmien kolor ikon w linkach*/
-      /* color: #3498db; */
-      color: var(--link-icon-color, #3498db);
-      /*alternatywnie mozesz uzyc zdefiniowanej zmiennej*/
-      /*
-       color: var(--icon-link-color, #3498db);
-      */
     }
-
-
-
-
-
   }
-  /*kolor tekstu linków*/
-  color: var(--link-text-color, #ecf0f1);
 
+  .menu-item.active > a {
+    background-color: #3498db;
+    color: var(--link-icon-color, #3498db);
+  }
 }
 
 .spacer {
-  flex-grow: 1; // Wypełnia dostępną przestrzeń
+  flex-grow: 1;
 }
 
 .account-section {
@@ -129,14 +106,6 @@
     white-space: nowrap;
   }
 }
-
-// Placeholder dla ikon - zastąp prawdziwymi klasami ikon
-.icon-menu::before { content: '☰'; }
-.icon-dashboard::before { content: '📊'; }
-.icon-devices::before { content: '📱'; }
-.icon-scenes::before { content: '🎬'; }
-.icon-about::before { content: 'ℹ️'; }   
-
 
 .sidebar-footer {
   position: absolute;

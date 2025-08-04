@@ -1,1 +1,45 @@
-import { Component } from '@angular/core';\nimport { MatCardModule } from '@angular/material/card';\nimport { MatButtonModule } from '@angular/material/button';\nimport { RouterModule } from '@angular/router';\n\n@Component({\n  selector: 'app-not-found',\n  standalone: true,\n  imports: [MatCardModule, MatButtonModule, RouterModule],\n  template: `\n    <div class=\"not-found-container\">\n      <mat-card class=\"not-found-card\">\n        <mat-card-header>\n          <mat-card-title>404 - Page Not Found</mat-card-title>\n        </mat-card-header>\n        <mat-card-content>\n          <p>The page you're looking for doesn't exist.</p>\n          <button mat-raised-button color=\"primary\" routerLink=\"/\">\n            Go Home\n          </button>\n        </mat-card-content>\n      </mat-card>\n    </div>\n  `,\n  styles: [`\n    .not-found-container {\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      min-height: 100vh;\n      background-color: #f5f5f5;\n    }\n    \n    .not-found-card {\n      width: 400px;\n      padding: 20px;\n      text-align: center;\n    }\n    \n    button {\n      margin-top: 16px;\n    }\n  `]\n})\nexport class NotFoundComponent {}\n
+import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-not-found',
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, RouterModule],
+  template: `
+    <div class="not-found-container">
+      <mat-card class="not-found-card">
+        <mat-card-header>
+          <mat-card-title>404 - Page Not Found</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>The page you're looking for doesn't exist.</p>
+          <button mat-raised-button color="primary" routerLink="/">
+            Go Home
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  `,
+  styles: [`
+    .not-found-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+    }
+    
+    .not-found-card {
+      width: 400px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    button {
+      margin-top: 16px;
+    }
+  `]
+})
+export class NotFoundComponent {}

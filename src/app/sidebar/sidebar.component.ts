@@ -60,10 +60,10 @@ export class SidebarComponent implements OnInit {
 
   loadDashboards(): void {
     this.dashboardService.getDashboards().subscribe({
-      next: (dashboards) => {
+      next: (dashboards: Dashboard[]) => {
         this.dashboards = dashboards;
       },
-      error: (error) => {
+      error: (error: unknown) => {
         console.error('Failed to load dashboards:', error);
       }
     });

@@ -1,1 +1,19 @@
-import { Injectable } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { Observable } from 'rxjs';\nimport { Dashboard, DashboardData } from '../models';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class DashboardService {\n  constructor(private http: HttpClient) {}\n\n  getDashboards(): Observable<Dashboard[]> {\n    return this.http.get<Dashboard[]>('/dashboards');\n  }\n\n  getDashboardData(dashboardId: string): Observable<DashboardData> {\n    return this.http.get<DashboardData>(`/dashboards/${dashboardId}`);\n  }\n}\n
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Dashboard, DashboardData } from '../models';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DashboardService {
+  constructor(private http: HttpClient) {}
+
+  getDashboards(): Observable<Dashboard[]> {
+    return this.http.get<Dashboard[]>('/dashboards');
+  }
+
+  getDashboardData(dashboardId: string): Observable<DashboardData> {
+    return this.http.get<DashboardData>(`/dashboards/${dashboardId}`);
+  }
+}

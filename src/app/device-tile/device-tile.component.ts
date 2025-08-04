@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./device-tile.component.scss' ]
 })
 export class DeviceTileComponent {
-  @Input() device: any; // Upewnij się, że device ma właściwość isOn (np. device.isOn)
+  @Input() device!: { isOn: boolean; [key: string]: unknown };
 }

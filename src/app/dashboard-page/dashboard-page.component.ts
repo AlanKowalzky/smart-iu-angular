@@ -1,1 +1,111 @@
-import { Component, OnInit } from '@angular/core';\nimport { ActivatedRoute, Router } from '@angular/router';\nimport { CommonModule } from '@angular/common';\nimport { switchMap, map, catchError, of } from 'rxjs';\nimport { DashboardService } from '../services/dashboard.service';\nimport { DashboardComponent } from '../dashboard/dashboard.component';\nimport { Dashboard, DashboardData } from '../models';\n\n@Component({\n  selector: 'app-dashboard-page',\n  standalone: true,\n  imports: [CommonModule, DashboardComponent],\n  template: `\n    <div class=\"dashboard-page\">\n      <app-dashboard \n        *ngIf=\"dashboardData\" \n        [tabs]=\"dashboardData.tabs\"\n        [activeTabId]=\"activeTabId\">\n      </app-dashboard>\n      <div class=\"loading\" *ngIf=\"!dashboardData && !error\">\n        Loading dashboard...\n      </div>\n      <div class=\"error\" *ngIf=\"error\">\n        {{ error }}\n      </div>\n    </div>\n  `,\n  styles: [`\n    .dashboard-page {\n      height: 100%;\n      width: 100%;\n    }\n    \n    .loading, .error {\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      height: 100%;\n      font-size: 18px;\n    }\n    \n    .error {\n      color: #f44336;\n    }\n  `]\n})\nexport class DashboardPageComponent implements OnInit {\n  dashboardData: DashboardData | null = null;\n  activeTabId = '';\n  error = '';\n\n  constructor(\n    private route: ActivatedRoute,\n    private router: Router,\n    private dashboardService: DashboardService\n  ) {}\n\n  ngOnInit(): void {\n    this.route.params.pipe(\n      switchMap(params => {\n        const dashboardId = params['dashboardId'];\n        const tabId = params['tabId'];\n        \n        if (!dashboardId) {\n          return this.redirectToFirstDashboard();\n        }\n        \n        return this.dashboardService.getDashboardData(dashboardId).pipe(\n          map(data => ({ data, tabId })),\n          catchError(() => {\n            return this.redirectToFirstDashboard();\n          })\n        );\n      })\n    ).subscribe({\n      next: (result) => {\n        if ('data' in result) {\n          this.dashboardData = result.data;\n          this.activeTabId = result.tabId || this.dashboardData.tabs[0]?.id || '';\n          \n          // Redirect if tabId is invalid\n          if (result.tabId && !this.dashboardData.tabs.find(tab => tab.id === result.tabId)) {\n            this.router.navigate(['/dashboard', this.route.snapshot.params['dashboardId'], this.dashboardData.tabs[0]?.id]);\n          }\n        }\n      },\n      error: (error) => {\n        this.error = 'Failed to load dashboard data';\n        console.error('Dashboard loading error:', error);\n      }\n    });\n  }\n\n  private redirectToFirstDashboard() {\n    return this.dashboardService.getDashboards().pipe(\n      map(dashboards => {\n        if (dashboards.length > 0) {\n          const firstDashboard = dashboards[0];\n          this.router.navigate(['/dashboard', firstDashboard.id]);\n        } else {\n          this.error = 'No dashboards available';\n        }\n        return null;\n      }),\n      catchError(() => {\n        this.error = 'Failed to load dashboards';\n        return of(null);\n      })\n    );\n  }\n}\n
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { switchMap, map, catchError, of } from 'rxjs';
+import { DashboardService } from '../services/dashboard.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { DashboardData } from '../models';
+
+@Component({
+  selector: 'app-dashboard-page',
+  standalone: true,
+  imports: [CommonModule, DashboardComponent],
+  template: `
+    <div class="dashboard-page">
+      <app-dashboard 
+        *ngIf="dashboardData" 
+        [tabs]="dashboardData.tabs"
+        [activeTabId]="activeTabId">
+      </app-dashboard>
+      <div class="loading" *ngIf="!dashboardData && !error">
+        Loading dashboard...
+      </div>
+      <div class="error" *ngIf="error">
+        {{ error }}
+      </div>
+    </div>
+  `,
+  styles: [`
+    .dashboard-page {
+      height: 100%;
+      width: 100%;
+    }
+    
+    .loading, .error {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      font-size: 18px;
+    }
+    
+    .error {
+      color: #f44336;
+    }
+  `]
+})
+export class DashboardPageComponent implements OnInit {
+  dashboardData: DashboardData | null = null;
+  activeTabId = '';
+  error = '';
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private dashboardService: DashboardService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.params.pipe(
+      switchMap(params => {
+        const dashboardId = params['dashboardId'];
+        const tabId = params['tabId'];
+        
+        if (!dashboardId) {
+          return this.redirectToFirstDashboard();
+        }
+        
+        return this.dashboardService.getDashboardData(dashboardId).pipe(
+          map(data => ({ data, tabId })),
+          catchError(() => {
+            return this.redirectToFirstDashboard();
+          })
+        );
+      })
+    ).subscribe({
+      next: (result) => {
+        if (result && 'data' in result) {
+          this.dashboardData = result.data;
+          this.activeTabId = result.tabId || this.dashboardData.tabs[0]?.id || '';
+          
+          // Redirect if tabId is invalid
+          if (result.tabId && !this.dashboardData.tabs.find(tab => tab.id === result.tabId)) {
+            this.router.navigate(['/dashboard', this.route.snapshot.params['dashboardId'], this.dashboardData.tabs[0]?.id]);
+          }
+        }
+      },
+      error: (error: unknown) => {
+        this.error = 'Failed to load dashboard data';
+        console.error('Dashboard loading error:', error);
+      }
+    });
+  }
+
+  private redirectToFirstDashboard() {
+    return this.dashboardService.getDashboards().pipe(
+      map(dashboards => {
+        if (dashboards.length > 0) {
+          const firstDashboard = dashboards[0];
+          this.router.navigate(['/dashboard', firstDashboard.id]);
+        } else {
+          this.error = 'No dashboards available';
+        }
+        return null;
+      }),
+      catchError(() => {
+        this.error = 'Failed to load dashboards';
+        return of(null);
+      })
+    );
+  }
+}

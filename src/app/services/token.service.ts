@@ -1,1 +1,24 @@
-import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class TokenService {\n  private readonly TOKEN_KEY = 'smart-home-token';\n\n  getToken(): string | null {\n    return localStorage.getItem(this.TOKEN_KEY);\n  }\n\n  saveToken(token: string): void {\n    localStorage.setItem(this.TOKEN_KEY, token);\n  }\n\n  clearToken(): void {\n    localStorage.removeItem(this.TOKEN_KEY);\n  }\n\n  hasToken(): boolean {\n    return !!this.getToken();\n  }\n}\n
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TokenService {
+  private readonly TOKEN_KEY = 'smart-home-token';
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  clearToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  hasToken(): boolean {
+    return !!this.getToken();
+  }
+}
