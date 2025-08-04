@@ -4,11 +4,12 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { mockApiInterceptor } from './interceptors/mock-api.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, mockApiInterceptor])),
     provideAnimationsAsync()
   ]
 };
