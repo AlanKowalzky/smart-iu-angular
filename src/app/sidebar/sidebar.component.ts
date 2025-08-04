@@ -1,6 +1,4 @@
-import {
-  Component,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   trigger,
   state,
@@ -8,9 +6,15 @@ import {
   transition,
   animate,
 } from '@angular/animations';
-import {MatIconModule} from '@angular/material/icon';
-import {RouterLink, RouterLinkActive} from '@angular/router';
-import {CommonModule} from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { DashboardService } from '../services/dashboard.service';
+import { Dashboard, UserProfile } from '../models';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,14 +28,50 @@ import {CommonModule} from '@angular/common';
     ]),
   ],
   standalone: true,
-  imports: [MatIconModule, RouterLink, RouterLinkActive, CommonModule]
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    RouterLink,
+    RouterLinkActive,
+    CommonModule
+  ]
 })
-export class SidebarComponent { 
+export class SidebarComponent implements OnInit {
   isCollapsed = false;
-  toggleSidebar()
-  {
-     this.isCollapsed = !this.isCollapsed;
-     console.log('isCollapsed', this.isCollapsed);
+  dashboards: Dashboard[] = [];
+  userProfile$: Observable<UserProfile | null>;
+  
+  constructor(
+    private authService: AuthService,
+    private dashboardService: DashboardService,
+    private router: Router
+  ) {
+    this.userProfile$ = this.authService.userProfile$;
+  }
+
+  ngOnInit(): void {
+    this.loadDashboards();
+  }
+
+  toggleSidebar(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  loadDashboards(): void {
+    this.dashboardService.getDashboards().subscribe({
+      next: (dashboards) => {
+        this.dashboards = dashboards;
+      },
+      error: (error) => {
+        console.error('Failed to load dashboards:', error);
+      }
+    });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
 

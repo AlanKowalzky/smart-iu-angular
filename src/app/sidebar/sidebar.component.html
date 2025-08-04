@@ -1,5 +1,5 @@
 <aside class="sidebar" [@.disabled]="false" [class.collapsed]="isCollapsed">
-  <div class="sidebar-header" >
+  <div class="sidebar-header">
     <span class="material-icons-outlined logo-icon">smart_toy</span>
     <h2 class="logo-text" *ngIf="!isCollapsed">Smart Home</h2>
   </div>
@@ -10,29 +10,34 @@
   </button>
   <nav class="sidebar-menu">
     <ul>
-      <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">        
-        <a routerLink="/dashboard" *ngIf="!isCollapsed"><span class="material-icons-outlined">dashboard</span>Pulpit</a>
-      </li>
-      <li class="menu-item" routerLinkActive="active">
-        <a routerLink="/devices" *ngIf="!isCollapsed"><span class="material-icons-outlined">devices</span>Urządzenia</a>
-      </li>
-      <li class="menu-item" routerLinkActive="active">
-        <a routerLink="/scenes" *ngIf="!isCollapsed"><span class="material-icons-outlined">movie</span>Sceny</a>
-      </li>
-      <li class="menu-item" routerLinkActive="active">
-        <a routerLink="/thermostat" *ngIf="!isCollapsed"><span class="material-icons-outlined">thermostat</span>Termostat</a>
-      </li>
-      <li class="menu-item" routerLinkActive="active">
-        <a routerLink="/about" *ngIf="!isCollapsed"><span class="material-icons-outlined">info</span>O Aplikacji</a>
+      <li class="menu-item" 
+          *ngFor="let dashboard of dashboards" 
+          routerLinkActive="active">
+        <a [routerLink]="['/dashboard', dashboard.id]" *ngIf="!isCollapsed">
+          <span class="material-icons-outlined">{{ dashboard.icon }}</span>
+          {{ dashboard.title }}
+        </a>
       </li>
     </ul>
+    <div class="empty-state" *ngIf="dashboards.length === 0 && !isCollapsed">
+      <p>You don't have any dashboards yet. They'll appear here as soon as you create them.</p>
+    </div>
   </nav>
-  <div class="sidebar-footer">
-
-    <div class="company-info">
-      <span class="company-name">RS School</span>
-      <span class="copyright">&copy; 2025</span>
+  <div class="sidebar-footer" *ngIf="userProfile$ | async as profile">
+    <div class="user-info" *ngIf="!isCollapsed">
+      <div class="user-avatar">{{ profile.initials }}</div>
+      <div class="user-details">
+        <span class="user-name">{{ profile.fullName }}</span>
+        <button mat-icon-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
       </div>
     </div>
-
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
 </aside>

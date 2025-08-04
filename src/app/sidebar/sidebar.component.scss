@@ -139,19 +139,48 @@
 
 
 .sidebar-footer {
-    position: absolute;
-    bottom: 1cm;
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 0.8em;
+  position: absolute;
+  bottom: 1cm;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 0.8em;
 
-    .company-name {
-        font-weight: bold;
-        display: block;
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #3498db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
     }
+
+    .user-details {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .user-name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+  }
 }
-}
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #bdc3c7;
+  font-size: 14px;
+  line-height: 1.4;
 }
