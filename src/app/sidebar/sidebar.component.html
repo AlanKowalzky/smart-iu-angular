@@ -24,14 +24,17 @@
     </div>
   </nav>
   <div class="sidebar-footer" *ngIf="userProfile$ | async as profile">
-    <div class="user-info" *ngIf="!isCollapsed">
+    <div class="user-info">
       <div class="user-avatar">{{ profile.initials }}</div>
-      <div class="user-details">
+      <div class="user-details" *ngIf="!isCollapsed">
         <span class="user-name">{{ profile.fullName }}</span>
-        <button mat-icon-button [matMenuTriggerFor]="userMenu">
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="menu-trigger">
           <mat-icon>more_vert</mat-icon>
         </button>
       </div>
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" *ngIf="isCollapsed" class="menu-trigger">
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </div>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item (click)="logout()">
