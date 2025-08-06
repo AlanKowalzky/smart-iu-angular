@@ -11,10 +11,12 @@
   background-color: var(--secondary-color, #2c3e50);
   color: #ecf0f1;
   transition: width 0.3s ease;
-  overflow: hidden;
+  z-index: 1000;
+  position: relative;
 
   &.collapsed {
-    width: 50px;
+    width: 60px;
+    overflow: visible;
 
     .sidebar-header h3, .user-details {
       display: none;
@@ -51,31 +53,46 @@
   cursor: pointer;
 }
 
-.nav-links {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
+.sidebar-menu {
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
 
-  li a {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    color: #ecf0f1;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-    white-space: nowrap;
+    .menu-item {
+      a {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        color: #ecf0f1;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+        white-space: nowrap;
 
-    i {
-      margin-right: 15px;
-      font-size: 20px;
-      width: 24px;
-      text-align: center;
+        span:first-child {
+          margin-right: 15px;
+          font-size: 20px;
+          width: 24px;
+          text-align: center;
+          flex-shrink: 0;
+        }
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      &.active > a {
+        background-color: #3498db;
+      }
     }
   }
+}
 
-  .menu-item.active > a {
-    background-color: #3498db;
-    color: var(--link-icon-color, #3498db);
+.sidebar.collapsed .sidebar-menu {
+  ul .menu-item a {
+    justify-content: center;
+    padding: 15px 10px;
   }
 }
 
@@ -108,42 +125,99 @@
 }
 
 .sidebar-footer {
-  position: absolute;
-  bottom: 1cm;
-  padding: 10px;
-  box-sizing: border-box;
-  width: 100%;
-  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding: 0.5rem;
+  flex-shrink: 0;
+  border-top: 1px solid #34495e;
+}
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #3498db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
+}
 
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: #3498db;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 12px;
-    }
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ecf0f1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 
-    .user-details {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .user-name {
-        font-size: 14px;
-        font-weight: 500;
-      }
-    }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
+
+  span {
+    font-size: 18px;
+  }
+}
+
+.user-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: #ecf0f1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 8px;
+}
+
+.avatar-logout-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #3498db;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #e74c3c;
+    transform: scale(1.1);
+  }
+
+  &:hover::after {
+    content: 'Logout';
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    z-index: 1000;
+  }
+}
+
+.sidebar.collapsed .sidebar-footer {
+  justify-content: center;
+  padding: 15px;
 }
 
 .empty-state {

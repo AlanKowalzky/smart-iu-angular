@@ -13,9 +13,9 @@
       <li class="menu-item" 
           *ngFor="let dashboard of dashboards" 
           routerLinkActive="active">
-        <a [routerLink]="['/dashboard', dashboard.id]" *ngIf="!isCollapsed">
+        <a [routerLink]="['/dashboard', dashboard.id]" (click)="navigateToDashboard(dashboard.id)">
           <span class="material-icons-outlined">{{ dashboard.icon }}</span>
-          {{ dashboard.title }}
+          <span class="nav-text" *ngIf="!isCollapsed">{{ dashboard.title }}</span>
         </a>
       </li>
     </ul>
@@ -23,24 +23,21 @@
       <p>You don't have any dashboards yet. They'll appear here as soon as you create them.</p>
     </div>
   </nav>
+  <div class="spacer"></div>
   <div class="sidebar-footer" *ngIf="userProfile$ | async as profile">
-    <div class="user-info">
+    <!-- Expanded sidebar -->
+    <ng-container *ngIf="!isCollapsed">
       <div class="user-avatar">{{ profile.initials }}</div>
-      <div class="user-details" *ngIf="!isCollapsed">
-        <span class="user-name">{{ profile.fullName }}</span>
-        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="menu-trigger">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </div>
-      <button mat-icon-button [matMenuTriggerFor]="userMenu" *ngIf="isCollapsed" class="menu-trigger">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </div>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
+      <div class="user-name">{{ profile.fullName }}</div>
+      <button class="logout-btn" (click)="logout()">
+        <span class="material-icons-outlined">exit_to_app</span>
         <span>Logout</span>
       </button>
-    </mat-menu>
+    </ng-container>
+    
+    <!-- Collapsed sidebar - avatar as logout button -->
+    <button *ngIf="isCollapsed" class="avatar-logout-btn" (click)="logout()" title="Logout">
+      {{ profile.initials }}
+    </button>
   </div>
 </aside>

@@ -1,8 +1,13 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { MOCK_DATA } from '../mockData';
+import { APP_CONFIG } from '../config';
 
 export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
+  // Skip mock if configured to use real backend
+  if (!APP_CONFIG.USE_MOCK_API) {
+    return next(req);
+  }
   
   if (req.url.includes('/api/user/login') && req.method === 'POST') {
     return of(new HttpResponse({
@@ -31,11 +36,20 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   
-  if ((req.url.includes('/api/dashboards/overview') || req.url.includes('/api/dashboards/lights')) && req.method === 'GET') {
+  if (req.url.includes('/api/dashboards/overview') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {
-        tabs: MOCK_DATA
+        tabs: MOCK_DATA.overview
+      }
+    }));
+  }
+
+  if (req.url.includes('/api/dashboards/lights') && req.method === 'GET') {
+    return of(new HttpResponse({
+      status: 200,
+      body: {
+        tabs: MOCK_DATA.lights
       }
     }));
   }

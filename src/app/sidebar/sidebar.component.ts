@@ -73,5 +73,17 @@ export class SidebarComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  navigateToDashboard(dashboardId: string): void {
+    this.dashboardService.getDashboardData(dashboardId).subscribe({
+      next: (data) => {
+        const firstTabId = data.tabs[0]?.id || 'overview';
+        this.router.navigate(['/dashboard', dashboardId, firstTabId]);
+      },
+      error: () => {
+        this.router.navigate(['/dashboard', dashboardId]);
+      }
+    });
+  }
 }
 
