@@ -1,9 +1,9 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Tab } from '../models';
 import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
-import { CardListComponent } from '../card-list/card-list.component';
+import { CardListComponent } from '../card-list/cardList.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,22 +15,21 @@ import { CardListComponent } from '../card-list/card-list.component';
 export class DashboardComponent implements OnChanges {
   @Input() tabs: Tab[] = [];
   @Input() activeTabId = '';
-  
-  constructor(private router: Router) {}
-  
+
+  private router = inject(Router);
+
   ngOnChanges(): void {
     if (!this.activeTabId && this.tabs.length > 0) {
       this.activeTabId = this.tabs[0].id;
     }
   }
-  
+
   get activeTab() {
     return this.tabs.find(tab => tab.id === this.activeTabId);
   }
 
   onTabChange(tabId: string) {
     this.activeTabId = tabId;
-    
     const currentUrl = this.router.url;
     const urlParts = currentUrl.split('/');
     if (urlParts.length >= 3) {

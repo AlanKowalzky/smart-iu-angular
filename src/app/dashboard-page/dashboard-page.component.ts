@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { switchMap, map, catchError, of } from 'rxjs';
@@ -49,11 +49,9 @@ export class DashboardPageComponent implements OnInit {
   activeTabId = '';
   error = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private dashboardService: DashboardService
-  ) {}
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dashboardService = inject(DashboardService);
 
   ngOnInit(): void {
     this.route.params.pipe(

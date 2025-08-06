@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
-import { CardListComponent } from '../card-list/card-list.component';
+import { CardListComponent } from '../card-list/cardList.component';
 import { MOCK_DATA } from '../mock-data';
 import { ElementRef } from '@angular/core';
 import { ActiveDeviceDirective } from '../active-device.directive';
 
 describe('DashboardComponent', () => {
-  let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
   beforeEach(async () => {
@@ -16,7 +15,6 @@ describe('DashboardComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { LoginRequest, LoginResponse, UserProfile } from '../models';
@@ -14,10 +14,8 @@ export class AuthService {
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   userProfile$ = this.userProfileSubject.asObservable();
 
-  constructor(
-    private http: HttpClient,
-    private tokenService: TokenService
-  ) {}
+  private http = inject(HttpClient);
+  private tokenService = inject(TokenService);
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>('/user/login', credentials).pipe(

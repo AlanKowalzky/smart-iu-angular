@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Dashboard, DashboardData } from '../models';
@@ -7,7 +7,7 @@ import { Dashboard, DashboardData } from '../models';
   providedIn: 'root'
 })
 export class DashboardService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getDashboards(): Observable<Dashboard[]> {
     return this.http.get<Dashboard[]>('/dashboards');

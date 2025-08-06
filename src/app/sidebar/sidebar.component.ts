@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   trigger,
   state,
@@ -41,12 +41,12 @@ export class SidebarComponent implements OnInit {
   isCollapsed = false;
   dashboards: Dashboard[] = [];
   userProfile$: Observable<UserProfile | null>;
-  
-  constructor(
-    private authService: AuthService,
-    private dashboardService: DashboardService,
-    private router: Router
-  ) {
+
+  private authService = inject(AuthService);
+  private dashboardService = inject(DashboardService);
+  private router = inject(Router);
+
+  constructor() {
     this.userProfile$ = this.authService.userProfile$;
   }
 

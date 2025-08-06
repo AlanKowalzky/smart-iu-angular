@@ -10,12 +10,12 @@ export class SensorValuePipe implements PipeTransform {
       return '';
     }
 
-    if (value.unit === 'clear') { // Specjalna obsługa dla 'clear'
+    if (value.unit === 'clear') { 
       return 'Clear';
     } else if (value.unit) {
         return `${value.amount} ${value.unit}`;
     } else {
-        return `${value.amount}`;  // Jeśli nie ma jednostki, zwracamy tylko wartość
+        return `${value.amount}`; 
     }
   }
 }

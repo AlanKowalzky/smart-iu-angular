@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -14,10 +14,10 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'smart-home-ui';
-  isAuthenticated$: Observable<boolean>;
+  private authService = inject(AuthService);
+  isAuthenticated$: Observable<boolean> = this.authService.isAuthenticated$;
 
-  constructor(private authService: AuthService) {
-    this.isAuthenticated$ = this.authService.isAuthenticated$;
+  constructor() {
   }
 
   ngOnInit(): void {
