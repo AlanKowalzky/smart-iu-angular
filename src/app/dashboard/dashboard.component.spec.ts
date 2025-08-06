@@ -45,7 +45,7 @@ describe('DashboardComponent', () => {
 
   it('should render group switch if card has 2+ devices', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    // Szukamy karty z 2+ urządzeniami
+
     const cardWithGroup = MOCK_DATA[0].cards.find(card =>
       card.items.filter(i => i.type === 'device').length > 1
     );

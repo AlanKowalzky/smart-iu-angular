@@ -31,16 +31,35 @@
   color: var(--secondary-color, #333);
 }
 .device-icon.active {
-    color: yellow; /* Ustawia kolor ikony na żółty */
-    text-shadow: 0 0 10px yellow; /* Dodaje efekt świecenia */
+    color: #ffd700;
+    text-shadow: 0 0 10px #ffd700;
+    animation: pulse-glow 2s ease-in-out infinite alternate;
 }
 
-/* Kolor ikonki dla włączonego urządzenia */
-.device-tile.device-on .device-icon {
-    color: #2ecc71; /* Stały zielony kolor */
+.device-tile.device-on {
+    .device-icon {
+        color: #2ecc71;
+        text-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+        animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+    
+    .device-name {
+        color: #2ecc71;
+        text-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
+        font-weight: 500;
+    }
 }
 
-/* Kolor ikonki dla wyłączonego urządzenia */
 .device-tile .device-icon {
-    color: #3498db; /* Stały niebieski kolor */
+    color: #3498db;
+    transition: all 0.3s ease;
+}
+
+@keyframes pulse-glow {
+    0% {
+        text-shadow: 0 0 5px currentColor;
+    }
+    100% {
+        text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    }
 }

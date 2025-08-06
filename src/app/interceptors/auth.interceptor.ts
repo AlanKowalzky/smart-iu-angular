@@ -12,14 +12,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let modifiedReq = req;
 
-  // Add /api prefix to relative URLs
+  
   if (!req.url.startsWith('http')) {
     modifiedReq = req.clone({
       url: `/api${req.url}`
     });
   }
 
-  // Add Authorization header if token exists
+  
   const token = tokenService.getToken();
   if (token) {
     modifiedReq = modifiedReq.clone({

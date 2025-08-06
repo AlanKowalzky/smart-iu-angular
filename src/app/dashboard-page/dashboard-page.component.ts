@@ -78,7 +78,7 @@ export class DashboardPageComponent implements OnInit {
           this.dashboardData = result.data;
           this.activeTabId = result.tabId || this.dashboardData.tabs[0]?.id || '';
           
-          // Redirect if tabId is invalid
+          
           if (result.tabId && !this.dashboardData.tabs.find(tab => tab.id === result.tabId)) {
             this.router.navigate(['/dashboard', this.route.snapshot.params['dashboardId'], this.dashboardData.tabs[0]?.id]);
           }
@@ -98,7 +98,7 @@ export class DashboardPageComponent implements OnInit {
           const firstDashboard = dashboards[0];
           this.router.navigate(['/dashboard', firstDashboard.id]);
         } else {
-          this.error = 'No dashboards available';
+          this.error = "You don't have any dashboards yet. They'll appear here as soon as you create them.";
         }
         return null;
       }),

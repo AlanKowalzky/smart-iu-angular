@@ -21,7 +21,7 @@ export interface Device extends BaseItem {
 
 export type CardItem = Sensor | Device;
 
-// API Models
+
 export interface DeviceItem {
   type: 'device';
   icon: string;

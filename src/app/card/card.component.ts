@@ -34,12 +34,12 @@ export class CardComponent implements OnInit {
 
   private updateGroupToggleState(): void {
     if (this.devices.length > 0) {
-      // Zgodnie z wymaganiem: przełącznik jest ON, jeśli PRZYNAJMNIEJ JEDNO urządzenie jest ON.
+      
       this.groupToggleState = this.devices.some((d) => d.state);
     }
   }
 
-  // Type guards for cleaner templates
+  
   isSensor(item: CardItem): item is Sensor {
     return item.type === 'sensor';
   }

@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Tab } from '../models';
 import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
 import { CardListComponent } from '../card-list/card-list.component';
@@ -15,6 +16,8 @@ export class DashboardComponent implements OnChanges {
   @Input() tabs: Tab[] = [];
   @Input() activeTabId = '';
   
+  constructor(private router: Router) {}
+  
   ngOnChanges(): void {
     if (!this.activeTabId && this.tabs.length > 0) {
       this.activeTabId = this.tabs[0].id;
@@ -27,5 +30,12 @@ export class DashboardComponent implements OnChanges {
 
   onTabChange(tabId: string) {
     this.activeTabId = tabId;
+    
+    const currentUrl = this.router.url;
+    const urlParts = currentUrl.split('/');
+    if (urlParts.length >= 3) {
+      const dashboardId = urlParts[2];
+      this.router.navigate(['/dashboard', dashboardId, tabId]);
+    }
   }
 }
