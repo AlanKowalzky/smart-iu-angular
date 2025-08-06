@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Tab } from '../models';
-import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
+import { TabSwitcherComponent } from '../tab-switcher/tabSwitcher.component';
 import { CardListComponent } from '../card-list/cardList.component';
 
 @Component({

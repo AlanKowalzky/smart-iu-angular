@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ActiveDeviceDirective } from './active-device.directive';
+import { ActiveDeviceDirective } from './activeDevice.directive';
 
 describe('ActiveDeviceDirective', () => {
   it('should create an instance', () => {

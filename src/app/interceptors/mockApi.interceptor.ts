@@ -1,6 +1,6 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
-import { MOCK_DATA } from '../mock-data';
+import { MOCK_DATA } from '../mockData';
 
 export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   

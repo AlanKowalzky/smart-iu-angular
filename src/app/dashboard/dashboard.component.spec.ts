@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import { TabSwitcherComponent } from '../tab-switcher/tab-switcher.component';
+import { TabSwitcherComponent } from '../tab-switcher/tabSwitcher.component';
 import { CardListComponent } from '../card-list/cardList.component';
-import { MOCK_DATA } from '../mock-data';
+import { MOCK_DATA } from '../mockData';
 import { ElementRef } from '@angular/core';
-import { ActiveDeviceDirective } from '../active-device.directive';
+import { ActiveDeviceDirective } from '../activeDevice.directive';
 
 describe('DashboardComponent', () => {
   let fixture: ComponentFixture<DashboardComponent>;

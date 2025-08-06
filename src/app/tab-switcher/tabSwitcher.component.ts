@@ -11,6 +11,6 @@ import { Tab } from '../models';
 })
 export class TabSwitcherComponent {
   @Input() tabs: Tab[] = [];
-  @Input() activeTabId: string = '';
+  @Input() activeTabId = '';
   @Output() tabChange = new EventEmitter<string>();
 }

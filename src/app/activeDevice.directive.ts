@@ -4,12 +4,10 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, inje
   selector: '[appActiveDevice]',
   standalone: true
 })
-export class ActiveDeviceDirective {
+export class ActiveDeviceDirective implements OnChanges {
   private el = inject(ElementRef);
   private renderer = inject(Renderer2);
-  @Input('appActiveDevice') isActive: boolean = false;
-
-  constructor() {}
+  @Input('appActiveDevice') isActive = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isActive']) {

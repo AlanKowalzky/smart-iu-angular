@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Card, CardItem, Device, Sensor } from '../models';
 import { FormsModule } from '@angular/forms';
-import { DeviceItemComponent } from '../device-item/device-item.component';
-import { SensorItemComponent } from '../sensor-item/sensor-item.component';
+import { DeviceItemComponent } from '../device-item/deviceItem.component';
+import { SensorItemComponent } from '../sensor-item/sensorItem.component';
 
 @Component({
   selector: 'app-card',

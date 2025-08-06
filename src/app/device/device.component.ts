@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Device } from '../models';
 import { CommonModule } from '@angular/common';
-import { ActiveDeviceDirective } from '../active-device.directive';
+import { ActiveDeviceDirective } from '../activeDevice.directive';
 
 @Component({
   selector: 'app-device',

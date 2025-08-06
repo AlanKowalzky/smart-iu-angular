@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { DashboardPageComponent } from './dashboard-page/dashboardPage.component';
+import { NotFoundComponent } from './not-found/notFound.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { 
     path: 'dashboard/:dashboardId/:tabId', 

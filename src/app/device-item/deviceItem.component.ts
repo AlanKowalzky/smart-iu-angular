@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Device } from '../models';
 import { FormsModule } from '@angular/forms';
-import { ActiveDeviceDirective } from '../active-device.directive';
+import { ActiveDeviceDirective } from '../activeDevice.directive';
 
 @Component({
   selector: 'app-device-item',
@@ -13,9 +13,9 @@ import { ActiveDeviceDirective } from '../active-device.directive';
 })
 export class DeviceItemComponent {
   @Input({ required: true }) device!: Device;
-  @Output() toggle = new EventEmitter<void>();
+  @Output() deviceToggle = new EventEmitter<void>();
 
   onToggle(): void {
-    this.toggle.emit();
+    this.deviceToggle.emit();
   }
 }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sensor } from '../models';
-import { SensorValuePipe } from '../sensor-value.pipe';
+import { SensorValuePipe } from '../sensorValue.pipe';
 
 @Component({
   selector: 'app-sensor-item',

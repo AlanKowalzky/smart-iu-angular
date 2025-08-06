@@ -47,6 +47,8 @@ export class AuthService {
           this.logout();
         }
       });
+    } else {
+      this.isAuthenticatedSubject.next(false);
     }
   }
 }
