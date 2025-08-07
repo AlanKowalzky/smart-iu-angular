@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, map } from 'rxjs';
 import { LoginRequest, LoginResponse, UserProfile } from '../models';
 import { TokenService } from './token.service';
 
@@ -18,15 +18,33 @@ export class AuthService {
   private tokenService = inject(TokenService);
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('/user/login', credentials).pipe(
-      tap(response => {
-        this.tokenService.saveToken(response.token);
-      })
+    return this.http.get<any[]>('/users', {
+      params: {
+        userName: credentials.userName,
+        password: credentials.password
+      }
+    }).pipe(
+      tap(users => {
+        if (users.length > 0) {
+          this.tokenService.saveToken(users[0].token);
+        } else {
+          throw new Error('Invalid credentials');
+        }
+      }),
+      map(users => ({ token: users[0].token }))
     );
   }
 
   loadProfile(): Observable<UserProfile> {
-    return this.http.get<UserProfile>('/user/profile').pipe(
+    return this.http.get<any[]>('/users', {
+      params: { token: this.tokenService.getToken() || '' }
+    }).pipe(
+      map(users => {
+        if (users.length > 0) {
+          return { fullName: users[0].fullName, initials: users[0].initials };
+        }
+        throw new Error('User not found');
+      }),
       tap(profile => {
         this.userProfileSubject.next(profile);
         this.isAuthenticatedSubject.next(true);

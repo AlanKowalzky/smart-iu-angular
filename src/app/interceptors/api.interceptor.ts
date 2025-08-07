@@ -13,7 +13,7 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
 
   let modifiedReq = req;
 
-  // Add /api prefix to relative URLs when not using mock
+  // Add base URL to relative URLs when not using mock
   if (!APP_CONFIG.USE_MOCK_API && !req.url.startsWith('http')) {
     modifiedReq = req.clone({
       url: `${APP_CONFIG.API_BASE_URL}${req.url}`

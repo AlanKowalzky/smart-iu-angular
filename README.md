@@ -33,6 +33,34 @@ This project is an Angular-based UI application for monitoring and controlling s
 
 ---
 
+## 🔧 Backend Configuration
+
+The application supports two backend modes:
+
+### 🚀 Mock API (Default)
+```typescript
+// src/app/config.ts
+USE_MOCK_API: true
+```
+- **Setup**: Just run `ng serve`
+- **Best for**: Rapid UI development
+- **No external dependencies**
+
+### 🖥️ JSON Server
+```typescript
+// src/app/config.ts
+USE_MOCK_API: false
+```
+- **Setup**: `npx json-server --watch db.json --port 3000`
+- **Best for**: Backend simulation and HTTP testing
+- **Simulates real server behavior**
+
+**Login for both modes**: `admin` / `admin`
+
+See [BACKEND_CONFIG.md](BACKEND_CONFIG.md) for detailed setup instructions.
+
+---
+
 ## 🧪 Mock Data
 
 Mock data is used to simulate devices and sensors. It defines:

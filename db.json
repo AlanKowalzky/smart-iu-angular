@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "userName": "admin",
+      "password": "admin",
+      "token": "mock-jwt-token-12345",
+      "fullName": "John Doe",
+      "initials": "JD"
+    }
+  ],
+  "dashboards": [
+    {
+      "id": "overview",
+      "title": "Overview", 
+      "icon": "home",
+      "tabs": [
+        {
+          "id": "overview",
+          "title": "Overview",
+          "cards": [
+            {
+              "id": "balcony-weather",
+              "title": "Balcony",
+              "layout": "horizontalLayout",
+              "items": [
+                { "type": "sensor", "icon": "thermostat", "label": "Temperature", "value": { "amount": 18.7, "unit": "°C" } }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lights",
+      "title": "Lights",
+      "icon": "lightbulb",
+      "tabs": [
+        {
+          "id": "control",
+          "title": "Quick Control",
+          "cards": [
+            {
+              "id": "main-lights",
+              "title": "Main Lights",
+              "layout": "verticalLayout",
+              "items": [
+                { "type": "device", "icon": "lightbulb", "label": "Living Room", "state": true }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
