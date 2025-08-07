@@ -1,23 +1,27 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { of } from 'rxjs';
 import { MOCK_DATA } from '../mockData';
 import { APP_CONFIG } from '../config';
+import { LoginRequest } from '../models';
 
 export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
+  const config = inject(APP_CONFIG);
   // Skip mock if configured to use real backend
-  if (!APP_CONFIG.USE_MOCK_API) {
+  if (!config.useMockApi) {
     return next(req);
   }
-  
-  if (req.url.includes('/api/user/login') && req.method === 'POST') {
-    return of(new HttpResponse({
-      status: 200,
-      body: { token: 'mock-jwt-token-12345' }
-    }));
+
+  if (req.url.endsWith('/api/user/login') && req.method === 'POST') {
+    const { userName, password } = req.body as LoginRequest;
+    if (userName === 'admin' && password === 'admin') {
+      return of(new HttpResponse({ status: 200, body: { token: 'mock-jwt-token-12345' } }));
+    }
+    return of(new HttpResponse({ status: 401, statusText: 'Invalid credentials' }));
   }
 
   
-  if (req.url.includes('/api/user/profile') && req.method === 'GET') {
+  if (req.url.endsWith('/api/user/profile') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: { fullName: 'John Doe', initials: 'JD' }
@@ -25,18 +29,17 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   
-  if (req.url.includes('/api/dashboards') && !req.url.includes('/api/dashboards/') && req.method === 'GET') {
+  if (req.url.endsWith('/api/dashboards') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: [
         { id: 'overview', title: 'Overview', icon: 'home' },
         { id: 'lights', title: 'Lights', icon: 'lightbulb' }
-      ]
+      ] // Zwracamy pustą tablicę, aby przetestować stan "pusty" -> []
     }));
   }
 
-  
-  if (req.url.includes('/api/dashboards/overview') && req.method === 'GET') {
+  if (req.url.endsWith('/api/dashboards/overview') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {
@@ -45,7 +48,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     }));
   }
 
-  if (req.url.includes('/api/dashboards/lights') && req.method === 'GET') {
+  if (req.url.endsWith('/api/dashboards/lights') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {

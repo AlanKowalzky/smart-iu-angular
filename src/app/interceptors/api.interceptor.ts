@@ -1,43 +1,18 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-import { TokenService } from '../services/token.service';
-import { AuthService } from '../services/auth.service';
-import { APP_CONFIG } from '../config';
+import { AppConfig, APP_CONFIG } from '../config';
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenService = inject(TokenService);
-  const authService = inject(AuthService);
-  const router = inject(Router);
+  const config: AppConfig = inject(APP_CONFIG);
 
-  let modifiedReq = req;
-
-  // Add base URL to relative URLs when not using mock
-  if (!APP_CONFIG.USE_MOCK_API && !req.url.startsWith('http')) {
-    modifiedReq = req.clone({
-      url: `${APP_CONFIG.API_BASE_URL}${req.url}`
-    });
+  // Do not intercept if using mock API or if the URL is already absolute
+  if (config.useMockApi || req.url.startsWith('http')) {
+    return next(req);
   }
 
-  // Add Authorization header if token exists
-  const token = tokenService.getToken();
-  if (token) {
-    modifiedReq = modifiedReq.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
+  const apiReq = req.clone({
+    url: `${config.apiBaseUrl}${req.url}`,
+  });
 
-  return next(modifiedReq).pipe(
-    catchError(error => {
-      if (error.status === 401) {
-        tokenService.clearToken();
-        authService.logout();
-        router.navigate(['/login']);
-      }
-      return throwError(() => error);
-    })
-  );
+  return next(apiReq);
 };

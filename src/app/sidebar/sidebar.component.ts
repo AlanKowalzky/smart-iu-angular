@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { DashboardService } from '../services/dashboard.service';
-import { Dashboard, UserProfile } from '../models';
+import { Dashboard, UserProfile, DashboardData } from '../models';
 
 @Component({
   selector: 'app-sidebar',
@@ -76,7 +76,7 @@ export class SidebarComponent implements OnInit {
 
   navigateToDashboard(dashboardId: string): void {
     this.dashboardService.getDashboardData(dashboardId).subscribe({
-      next: (data) => {
+      next: (data: DashboardData) => {
         const firstTabId = data.tabs[0]?.id || 'overview';
         this.router.navigate(['/dashboard', dashboardId, firstTabId]);
       },

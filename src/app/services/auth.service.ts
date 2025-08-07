@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, map } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of, catchError, map } from 'rxjs';
 import { LoginRequest, LoginResponse, UserProfile } from '../models';
 import { TokenService } from './token.service';
 
@@ -18,20 +18,23 @@ export class AuthService {
   private tokenService = inject(TokenService);
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.get<any[]>('/users', {
-      params: {
-        userName: credentials.userName,
-        password: credentials.password
-      }
-    }).pipe(
-      tap(users => {
-        if (users.length > 0) {
-          this.tokenService.saveToken(users[0].token);
+    return this.http.get<any[]>('/users').pipe(
+      map(users => {
+        // JSON Server zwraca wszystkich użytkowników, musimy filtrować ręcznie
+        const user = users.find(u => u.userName === credentials.userName && u.password === credentials.password);
+        if (user) {
+          this.tokenService.saveToken(user.token);
+          return { token: user.token };
         } else {
-          throw new Error('Invalid credentials');
+          throw { status: 401, message: 'Invalid credentials' };
         }
       }),
-      map(users => ({ token: users[0].token }))
+      catchError(error => {
+        console.error('Login error:', error);
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.message);
+        throw error;
+      })
     );
   }
 
@@ -48,6 +51,10 @@ export class AuthService {
       tap(profile => {
         this.userProfileSubject.next(profile);
         this.isAuthenticatedSubject.next(true);
+      }),
+      catchError(() => {
+        this.logout();
+        return of(); // Zwróć pusty obserwowalny, aby zakończyć strumień
       })
     );
   }
@@ -61,12 +68,8 @@ export class AuthService {
   checkAuthStatus(): void {
     if (this.tokenService.hasToken()) {
       this.loadProfile().subscribe({
-        error: () => {
-          this.logout();
-        }
+        // Błąd jest już obsługiwany wewnątrz potoku `loadProfile`
       });
-    } else {
-      this.isAuthenticatedSubject.next(false);
     }
   }
 }

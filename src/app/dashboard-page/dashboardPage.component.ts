@@ -74,11 +74,11 @@ export class DashboardPageComponent implements OnInit {
       next: (result) => {
         if (result && 'data' in result) {
           this.dashboardData = result.data;
-          this.activeTabId = result.tabId || this.dashboardData.tabs[0]?.id || '';
+          this.activeTabId = result.tabId || this.dashboardData?.tabs[0]?.id || '';
           
           
-          if (result.tabId && !this.dashboardData.tabs.find(tab => tab.id === result.tabId)) {
-            this.router.navigate(['/dashboard', this.route.snapshot.params['dashboardId'], this.dashboardData.tabs[0]?.id]);
+          if (result.tabId && this.dashboardData && !this.dashboardData.tabs.find(tab => tab.id === result.tabId)) {
+            this.router.navigate(['/dashboard', this.route.snapshot.params['dashboardId'], this.dashboardData?.tabs[0]?.id]);
           }
         }
       },
@@ -91,7 +91,7 @@ export class DashboardPageComponent implements OnInit {
 
   private redirectToFirstDashboard() {
     return this.dashboardService.getDashboards().pipe(
-      map(dashboards => {
+      map((dashboards: any[]) => {
         if (dashboards.length > 0) {
           const firstDashboard = dashboards[0];
           this.router.navigate(['/dashboard', firstDashboard.id]);

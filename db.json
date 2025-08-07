@@ -20,6 +20,15 @@
           "title": "Overview",
           "cards": [
             {
+              "id": "server-status",
+              "title": "Server Status",
+              "layout": "verticalLayout",
+              "items": [
+                { "type": "device", "icon": "dns", "label": "JSON Server", "state": true },
+                { "type": "sensor", "icon": "speed", "label": "Port", "value": { "amount": 3000, "unit": "" } }
+              ]
+            },
+            {
               "id": "balcony-weather",
               "title": "Balcony",
               "layout": "horizontalLayout",
@@ -40,6 +49,15 @@
           "id": "control",
           "title": "Quick Control",
           "cards": [
+            {
+              "id": "backend-info",
+              "title": "Backend Info",
+              "layout": "verticalLayout",
+              "items": [
+                { "type": "device", "icon": "storage", "label": "JSON Server Active", "state": true },
+                { "type": "sensor", "icon": "http", "label": "Endpoint", "value": { "amount": 3000, "unit": "localhost" } }
+              ]
+            },
             {
               "id": "main-lights",
               "title": "Main Lights",

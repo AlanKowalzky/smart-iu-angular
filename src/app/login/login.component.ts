@@ -103,7 +103,8 @@ export class LoginComponent {
         next: () => {
           this.authService.loadProfile().subscribe({
             next: () => {
-              this.router.navigate(['/dashboard']);
+              // Przekieruj do pierwszego dostępnego dashboardu
+              this.router.navigate(['/']);
             },
             error: () => {
               this.errorMessage = 'Unknown error occurred. Please try again later.';
@@ -115,6 +116,8 @@ export class LoginComponent {
           this.isLoading = false;
           if (error && typeof error === 'object' && 'status' in error && error.status === 401) {
             this.errorMessage = 'Invalid login or password.';
+          } else if (error && typeof error === 'object' && 'status' in error && error.status === 0) {
+            this.errorMessage = 'Cannot connect to server. Please make sure JSON Server is running on port 3000.';
           } else {
             this.errorMessage = 'Unknown error occurred. Please try again later.';
           }
