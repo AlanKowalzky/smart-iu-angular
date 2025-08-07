@@ -34,7 +34,7 @@ export class DashboardService {
   getDashboardData(dashboardId: string): Observable<DashboardData> {
     const endpoint = this.config.useMockApi ? `/api/dashboards/${dashboardId}` : `/dashboards/${dashboardId}`;
     
-    return this.http.get<any>(endpoint).pipe(
+    return this.http.get<{ tabs: unknown[] }>(endpoint).pipe(
       map(dashboard => ({ tabs: dashboard.tabs }))
     );
   }

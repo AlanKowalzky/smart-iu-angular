@@ -91,7 +91,7 @@ export class DashboardPageComponent implements OnInit {
 
   private redirectToFirstDashboard() {
     return this.dashboardService.getDashboards().pipe(
-      map((dashboards: any[]) => {
+      map((dashboards: { id: string; title: string; icon: string }[]) => {
         if (dashboards.length > 0) {
           const firstDashboard = dashboards[0];
           this.router.navigate(['/dashboard', firstDashboard.id]);

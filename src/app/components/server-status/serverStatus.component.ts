@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { ServerStatusService } from '../../services/server-status.service';
+import { ServerStatusService } from '../../services/serverStatus.service';
 
 @Component({
   selector: 'app-server-status',
   standalone: true,
   imports: [CommonModule, MatIconModule],
   template: `
-    <div class="server-status" [class.online]="isOnline$ | async" [class.offline]="!(isOnline$ | async)">
+    <div class="server-status" [class.online]="isOnline$ | async" [class.offline]="(isOnline$ | async) === false">
       <mat-icon>{{ (isOnline$ | async) ? 'dns' : 'dns_off' }}</mat-icon>
       <span>JSON Server: {{ (isOnline$ | async) ? 'ONLINE' : 'OFFLINE' }}</span>
     </div>

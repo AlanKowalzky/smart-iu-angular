@@ -5,7 +5,7 @@ import { catchError, throwError } from 'rxjs';
 import { TokenService } from '../services/token.service';
 import { AuthService } from '../services/auth.service';
 
-const handleAuthError = (err: any, authService: AuthService, router: Router) => {
+const handleAuthError = (err: unknown, authService: AuthService, router: Router) => {
   if (err instanceof HttpErrorResponse && err.status === 401) {
     authService.logout();
     router.navigate(['/login']);

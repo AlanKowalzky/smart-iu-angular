@@ -31,7 +31,7 @@ export class AuthService {
         })
       );
     } else {
-      return this.http.get<any[]>('/users').pipe(
+      return this.http.get<{ userName: string; password: string; token: string }[]>('/users').pipe(
         map(users => {
           const user = users.find(u => u.userName === credentials.userName && u.password === credentials.password);
           if (user) {
@@ -62,7 +62,7 @@ export class AuthService {
         })
       );
     } else {
-      return this.http.get<any[]>('/users', {
+      return this.http.get<{ fullName: string; initials: string }[]>('/users', {
         params: { token: this.tokenService.getToken() || '' }
       }).pipe(
         map(users => {
