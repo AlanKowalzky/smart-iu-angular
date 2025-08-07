@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     // Ta linia rejestruje konfigurację w systemie DI
     { provide: APP_CONFIG, useValue: APP_DI_CONFIG },
     provideRouter(routes),
-    provideHttpClient(withInterceptors([apiInterceptor, authInterceptor, mockApiInterceptor])),
+    provideHttpClient(withInterceptors([mockApiInterceptor, apiInterceptor, authInterceptor])),
     provideAnimations()
   ],
 };

@@ -2,12 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, tap, throwError, map } from 'rxjs';
 import { Dashboard, DashboardData } from '../models';
+import { APP_CONFIG } from '../config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
   private http = inject(HttpClient);
+  private config = inject(APP_CONFIG);
 
   private dashboardsSubject = new BehaviorSubject<Dashboard[]>([]);
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -18,7 +20,9 @@ export class DashboardService {
   error$ = this.errorSubject.asObservable();
 
   getDashboards(): Observable<Dashboard[]> {
-    return this.http.get<Dashboard[]>('/dashboards').pipe(
+    const endpoint = this.config.useMockApi ? '/api/dashboards' : '/dashboards';
+    
+    return this.http.get<Dashboard[]>(endpoint).pipe(
       map(dashboards => dashboards.map(d => ({
         id: d.id,
         title: d.title,
@@ -28,7 +32,9 @@ export class DashboardService {
   }
 
   getDashboardData(dashboardId: string): Observable<DashboardData> {
-    return this.http.get<any>(`/dashboards/${dashboardId}`).pipe(
+    const endpoint = this.config.useMockApi ? `/api/dashboards/${dashboardId}` : `/dashboards/${dashboardId}`;
+    
+    return this.http.get<any>(endpoint).pipe(
       map(dashboard => ({ tabs: dashboard.tabs }))
     );
   }

@@ -25,6 +25,7 @@
   </nav>
   <div class="spacer"></div>
   <div class="sidebar-footer" *ngIf="userProfile$ | async as profile">
+
     <!-- Expanded sidebar -->
     <ng-container *ngIf="!isCollapsed">
       <div class="user-avatar">{{ profile.initials }}</div>

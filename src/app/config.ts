@@ -7,7 +7,7 @@ export interface AppConfig {
 
 export const APP_DI_CONFIG: AppConfig = {
   // Backend configuration
-  useMockApi: false, // Set to false to use json-server backend
+  useMockApi: true, // Set to false to use json-server backend
   apiBaseUrl: 'http://localhost:3000', // json-server URL
 };
 

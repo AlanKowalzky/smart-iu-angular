@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, of, catchError, map } from 'rxjs';
 import { LoginRequest, LoginResponse, UserProfile } from '../models';
 import { TokenService } from './token.service';
+import { APP_CONFIG } from '../config';
 
 @Injectable({
   providedIn: 'root'
@@ -16,47 +17,70 @@ export class AuthService {
 
   private http = inject(HttpClient);
   private tokenService = inject(TokenService);
+  private config = inject(APP_CONFIG);
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.get<any[]>('/users').pipe(
-      map(users => {
-        // JSON Server zwraca wszystkich użytkowników, musimy filtrować ręcznie
-        const user = users.find(u => u.userName === credentials.userName && u.password === credentials.password);
-        if (user) {
-          this.tokenService.saveToken(user.token);
-          return { token: user.token };
-        } else {
-          throw { status: 401, message: 'Invalid credentials' };
-        }
-      }),
-      catchError(error => {
-        console.error('Login error:', error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.message);
-        throw error;
-      })
-    );
+    if (this.config.useMockApi) {
+      return this.http.post<LoginResponse>('/api/user/login', credentials).pipe(
+        tap(response => {
+          this.tokenService.saveToken(response.token);
+        }),
+        catchError(error => {
+          console.error('Login error:', error);
+          throw error;
+        })
+      );
+    } else {
+      return this.http.get<any[]>('/users').pipe(
+        map(users => {
+          const user = users.find(u => u.userName === credentials.userName && u.password === credentials.password);
+          if (user) {
+            this.tokenService.saveToken(user.token);
+            return { token: user.token };
+          } else {
+            throw { status: 401, message: 'Invalid credentials' };
+          }
+        }),
+        catchError(error => {
+          console.error('Login error:', error);
+          throw error;
+        })
+      );
+    }
   }
 
   loadProfile(): Observable<UserProfile> {
-    return this.http.get<any[]>('/users', {
-      params: { token: this.tokenService.getToken() || '' }
-    }).pipe(
-      map(users => {
-        if (users.length > 0) {
-          return { fullName: users[0].fullName, initials: users[0].initials };
-        }
-        throw new Error('User not found');
-      }),
-      tap(profile => {
-        this.userProfileSubject.next(profile);
-        this.isAuthenticatedSubject.next(true);
-      }),
-      catchError(() => {
-        this.logout();
-        return of(); // Zwróć pusty obserwowalny, aby zakończyć strumień
-      })
-    );
+    if (this.config.useMockApi) {
+      return this.http.get<UserProfile>('/api/user/profile').pipe(
+        tap(profile => {
+          this.userProfileSubject.next(profile);
+          this.isAuthenticatedSubject.next(true);
+        }),
+        catchError(() => {
+          this.logout();
+          return of();
+        })
+      );
+    } else {
+      return this.http.get<any[]>('/users', {
+        params: { token: this.tokenService.getToken() || '' }
+      }).pipe(
+        map(users => {
+          if (users.length > 0) {
+            return { fullName: users[0].fullName, initials: users[0].initials };
+          }
+          throw new Error('User not found');
+        }),
+        tap(profile => {
+          this.userProfileSubject.next(profile);
+          this.isAuthenticatedSubject.next(true);
+        }),
+        catchError(() => {
+          this.logout();
+          return of();
+        })
+      );
+    }
   }
 
   logout(): void {
