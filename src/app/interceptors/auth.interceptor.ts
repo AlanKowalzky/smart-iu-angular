@@ -19,7 +19,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const token = tokenService.getToken();
 
-  // Do not intercept login requests
   if (req.url.includes('/api/user/login')) {
     return next(req);
   }
@@ -29,6 +28,5 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(authReq).pipe(catchError(err => handleAuthError(err, authService, router)));
   }
 
-  // For requests without a token, still handle potential 401s if the server sends one
   return next(req).pipe(catchError(err => handleAuthError(err, authService, router)));
 };

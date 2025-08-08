@@ -5,7 +5,6 @@ import { AppConfig, APP_CONFIG } from '../config';
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   const config: AppConfig = inject(APP_CONFIG);
 
-  // Do not intercept if using mock API or if the URL is already absolute
   if (config.useMockApi || req.url.startsWith('http')) {
     return next(req);
   }

@@ -26,7 +26,6 @@ export class AuthService {
           this.tokenService.saveToken(response.token);
         }),
         catchError(error => {
-          console.error('Login error:', error);
           throw error;
         })
       );
@@ -42,7 +41,6 @@ export class AuthService {
           }
         }),
         catchError(error => {
-          console.error('Login error:', error);
           throw error;
         })
       );
@@ -91,9 +89,7 @@ export class AuthService {
 
   checkAuthStatus(): void {
     if (this.tokenService.hasToken()) {
-      this.loadProfile().subscribe({
-        // Błąd jest już obsługiwany wewnątrz potoku `loadProfile`
-      });
+      this.loadProfile().subscribe();
     }
   }
 }

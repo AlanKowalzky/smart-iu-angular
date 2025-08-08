@@ -7,7 +7,6 @@ import { LoginRequest } from '../models';
 
 export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   const config = inject(APP_CONFIG);
-  // Skip mock if configured to use real backend
   if (!config.useMockApi) {
     return next(req);
   }
@@ -35,7 +34,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
       body: [
         { id: 'overview', title: 'Overview', icon: 'home' },
         { id: 'lights', title: 'Lights', icon: 'lightbulb' }
-      ] // Zwracamy pustą tablicę, aby przetestować stan "pusty" -> []
+      ]
     }));
   }
 
