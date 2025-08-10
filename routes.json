@@ -1,0 +1,6 @@
+{
+  "/api/user/login": "/login",
+  "/api/user/profile": "/profile", 
+  "/api/dashboards": "/dashboards",
+  "/api/dashboards/:id": "/dashboards/:id"
+}

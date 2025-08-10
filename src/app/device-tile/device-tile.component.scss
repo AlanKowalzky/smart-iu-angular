@@ -1,0 +1,65 @@
+.device-tile {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  /* Klasa dodawana, gdy urządzenie jest włączone */
+  &.device-on {
+    /* Ładniejszy, rozproszony cień w kolorze akcentu */
+    background-color: rgba(46, 204, 113, 0.2); /* Delikatne zielone tło */
+    color: #2c3e50; /* Zielony kolor tekstu */
+    border: 1px solid var(--accent-color, #2ecc71);
+  }
+}
+
+.device-header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.device-name {
+  margin: 0;
+}
+
+.device-icon {
+  color: var(--secondary-color, #333);
+}
+.device-icon.active {
+    color: #ffd700;
+    text-shadow: 0 0 10px #ffd700;
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+.device-tile.device-on {
+    .device-icon {
+        color: #2ecc71;
+        text-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+        animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+    
+    .device-name {
+        color: #2ecc71;
+        text-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
+        font-weight: 500;
+    }
+}
+
+.device-tile .device-icon {
+    color: #3498db;
+    transition: all 0.3s ease;
+}
+
+@keyframes pulse-glow {
+    0% {
+        text-shadow: 0 0 5px currentColor;
+    }
+    100% {
+        text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+}
