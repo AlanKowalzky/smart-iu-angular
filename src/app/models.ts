@@ -21,24 +21,6 @@ export interface Device extends BaseItem {
 
 export type CardItem = Sensor | Device;
 
-
-export interface DeviceItem {
-  type: 'device';
-  icon: string;
-  label: string;
-  state: boolean;
-}
-
-export interface SensorItem {
-  type: 'sensor';
-  icon: string;
-  label: string;
-  value: {
-    amount: number;
-    unit: string;
-  };
-}
-
 export interface Card {
   id: string;
   title: string;
@@ -56,6 +38,7 @@ export interface Dashboard {
   id: string;
   title: string;
   icon: string;
+  tabs: Tab[];
 }
 
 export interface DashboardData {

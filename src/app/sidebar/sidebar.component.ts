@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { DashboardService } from '../services/dashboard.service';
-import { Dashboard, UserProfile, DashboardData } from '../models';
+import { Dashboard, UserProfile } from '../models';
 
 
 @Component({
@@ -76,15 +76,18 @@ export class SidebarComponent implements OnInit {
   }
 
   navigateToDashboard(dashboardId: string): void {
-    this.dashboardService.getDashboardData(dashboardId).subscribe({
-      next: (data: DashboardData) => {
-        const firstTabId = data.tabs[0]?.id || 'overview';
+    // NOTE: The dashboard object from getDashboards() doesn't include tabs.
+    // We must call getDashboard(id) to get the full object with tabs.
+    this.dashboardService.getDashboard(dashboardId).subscribe({
+      next: (data: Dashboard) => {
+        // Navigate to the first tab if it exists
+        const firstTabId = data.tabs && data.tabs.length > 0 ? data.tabs[0].id : ' ';
         this.router.navigate(['/dashboard', dashboardId, firstTabId]);
       },
       error: () => {
+        // Fallback navigation if fetching the dashboard details fails
         this.router.navigate(['/dashboard', dashboardId]);
       }
     });
   }
 }
-

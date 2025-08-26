@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { Tab } from '../models';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Tab, Dashboard } from '../models';
 import { TabSwitcherComponent } from '../tab-switcher/tabSwitcher.component';
 import { CardListComponent } from '../card-list/cardList.component';
 
@@ -13,14 +13,25 @@ import { CardListComponent } from '../card-list/cardList.component';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnChanges {
-  @Input() tabs: Tab[] = [];
-  @Input() activeTabId = '';
+  @Input({ required: true }) dashboard!: Dashboard;
+  @Input() isEditing = false;
+
+  activeTabId = '';
+  tabs: Tab[] = [];
 
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  ngOnChanges(): void {
-    if (!this.activeTabId && this.tabs.length > 0) {
-      this.activeTabId = this.tabs[0].id;
+  constructor() {
+    this.activeTabId = this.route.snapshot.paramMap.get('tabId') || '';
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['dashboard']) {
+      this.tabs = this.dashboard?.tabs || [];
+      if (!this.activeTabId && this.tabs.length > 0) {
+        this.activeTabId = this.tabs[0].id;
+      }
     }
   }
 
@@ -29,12 +40,6 @@ export class DashboardComponent implements OnChanges {
   }
 
   onTabChange(tabId: string) {
-    this.activeTabId = tabId;
-    const currentUrl = this.router.url;
-    const urlParts = currentUrl.split('/');
-    if (urlParts.length >= 3) {
-      const dashboardId = urlParts[2];
-      this.router.navigate(['/dashboard', dashboardId, tabId]);
-    }
+    this.router.navigate(['/dashboard', this.dashboard.id, tabId]);
   }
 }

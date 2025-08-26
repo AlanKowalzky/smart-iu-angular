@@ -1,109 +1,68 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { switchMap, map, catchError, of } from 'rxjs';
-import { DashboardService } from '../services/dashboard.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map, tap } from 'rxjs';
+import { selectIsEditing, selectSelectedDashboard } from './+state/dashboard.reducer';
+import { DashboardPageActions } from './+state/dashboard.actions';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-import { DashboardData } from '../models';
 
 @Component({
   selector: 'app-dashboard-page',
   standalone: true,
-  imports: [CommonModule, DashboardComponent],
+  imports: [CommonModule, RouterLink, DashboardComponent],
   template: `
-    <div class="dashboard-page">
-      <app-dashboard 
-        *ngIf="dashboardData" 
-        [tabs]="dashboardData.tabs"
-        [activeTabId]="activeTabId">
-      </app-dashboard>
-      <div class="loading" *ngIf="!dashboardData && !error">
-        Loading dashboard...
+    <div *ngIf="dashboard$ | async as dashboard">
+      <div class="toolbar">
+        <h2>{{ dashboard.title }}</h2>
+        <div>
+          <button *ngIf="!isEditing()" (click)="enterEditMode()">Edit</button>
+          <button *ngIf="isEditing()" (click)="save()">Save</button>
+          <button *ngIf="isEditing()" (click)="discard()">Discard</button>
+          <button *ngIf="!isEditing()">Delete</button>
+        </div>
       </div>
-      <div class="error" *ngIf="error">
-        {{ error }}
-      </div>
+      <app-dashboard [dashboard]="dashboard" [isEditing]="isEditing()" />
     </div>
   `,
   styles: [`
-    .dashboard-page {
-      height: 100%;
-      width: 100%;
-    }
-    
-    .loading, .error {
+    .toolbar {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      height: 100%;
-      font-size: 18px;
+      padding: 1rem;
+      border-bottom: 1px solid #ccc;
     }
-    
-    .error {
-      color: #f44336;
-    }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardPageComponent implements OnInit {
-  dashboardData: DashboardData | null = null;
-  activeTabId = '';
-  error = '';
+export class DashboardPageComponent {
+  private readonly store = inject(Store);
+  private readonly route = inject(ActivatedRoute);
 
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private dashboardService = inject(DashboardService);
+  readonly dashboard$ = this.store.select(selectSelectedDashboard);
+  readonly isEditing = this.store.selectSignal(selectIsEditing);
 
-  ngOnInit(): void {
+  constructor() {
     this.route.params.pipe(
-      switchMap(params => {
-        const dashboardId = params['dashboardId'];
-        const tabId = params['tabId'];
-        
-        if (!dashboardId) {
-          return this.redirectToFirstDashboard();
+      map(params => params['dashboardId']),
+      tap(dashboardId => {
+        if (dashboardId) {
+          this.store.dispatch(DashboardPageActions.loadDashboard({ dashboardId }));
         }
-        
-        return this.dashboardService.getDashboardData(dashboardId).pipe(
-          map(data => ({ data, tabId })),
-          catchError(() => {
-            return this.redirectToFirstDashboard();
-          })
-        );
       })
-    ).subscribe({
-      next: (result) => {
-        if (result && 'data' in result) {
-          this.dashboardData = result.data;
-          this.activeTabId = result.tabId || this.dashboardData?.tabs[0]?.id || '';
-          
-          
-          if (result.tabId && this.dashboardData && !this.dashboardData.tabs.find(tab => tab.id === result.tabId)) {
-            this.router.navigate(['/dashboard', this.route.snapshot.params['dashboardId'], this.dashboardData?.tabs[0]?.id]);
-          }
-        }
-      },
-      error: (error: unknown) => {
-        this.error = 'Failed to load dashboard data';
-        console.error('Dashboard loading error:', error);
-      }
-    });
+    ).subscribe();
   }
 
-  private redirectToFirstDashboard() {
-    return this.dashboardService.getDashboards().pipe(
-      map((dashboards: { id: string; title: string; icon: string }[]) => {
-        if (dashboards.length > 0) {
-          const firstDashboard = dashboards[0];
-          this.router.navigate(['/dashboard', firstDashboard.id]);
-        } else {
-          this.error = "You don't have any dashboards yet. They'll appear here as soon as you create them.";
-        }
-        return null;
-      }),
-      catchError(() => {
-        this.error = 'Failed to load dashboards';
-        return of(null);
-      })
-    );
+  enterEditMode(): void {
+    this.store.dispatch(DashboardPageActions.enterEditMode());
+  }
+
+  save(): void {
+    this.store.dispatch(DashboardPageActions.saveDashboard());
+  }
+
+  discard(): void {
+    this.store.dispatch(DashboardPageActions.discardChanges());
   }
 }
