@@ -9,7 +9,7 @@
     </span>
   </button>
   <nav class="sidebar-menu">
-    <ul>
+    <ul *ngIf="dashboards$ | async as dashboards">
       <li class="menu-item" 
           *ngFor="let dashboard of dashboards" 
           routerLinkActive="active">
@@ -19,7 +19,7 @@
         </a>
       </li>
     </ul>
-    <div class="empty-state" *ngIf="dashboards.length === 0 && !isCollapsed">
+    <div class="empty-state" *ngIf="(dashboards$ | async)?.length === 0 && !isCollapsed">
       <p>You don't have any dashboards yet. They'll appear here as soon as you create them.</p>
     </div>
   </nav>

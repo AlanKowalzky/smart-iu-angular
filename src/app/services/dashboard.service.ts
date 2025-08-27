@@ -1,28 +1,23 @@
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { APP_CONFIG } from '../config';
-import { Dashboard, Tab } from '../models';
+import { Dashboard, DashboardItem, Tab } from '../models';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class DashboardService {
-  private readonly http = inject(HttpClient);
-  private readonly config = inject(APP_CONFIG);
+  private http = inject(HttpClient);
 
-  private get apiUrl() {
-    // In a real app, you might have a more robust way to determine the base URL
-    return this.config.useMockApi ? '/api' : ''; 
-  }
-
-  getDashboards(): Observable<Dashboard[]> {
-    return this.http.get<Dashboard[]>(`${this.apiUrl}/dashboards`);
+  getDashboards(): Observable<DashboardItem[]> {
+    return this.http.get<DashboardItem[]>('/api/dashboards');
   }
 
   getDashboard(id: string): Observable<Dashboard> {
-    return this.http.get<Dashboard>(`${this.apiUrl}/dashboards/${id}`);
+    return this.http.get<Dashboard>(`/api/dashboards/${id}`);
   }
 
-  updateDashboard(id: string, payload: { tabs: Tab[] }): Observable<Dashboard> {
-    return this.http.put<Dashboard>(`${this.apiUrl}/dashboards/${id}`, payload);
+  updateDashboard(id: string, tabs: { tabs: Tab[] }): Observable<Dashboard> {
+    return this.http.put<Dashboard>(`/api/dashboards/${id}`, tabs);
   }
 }

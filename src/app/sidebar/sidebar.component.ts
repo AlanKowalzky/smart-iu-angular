@@ -15,6 +15,9 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { DashboardService } from '../services/dashboard.service';
 import { Dashboard, UserProfile } from '../models';
+import { Store } from '@ngrx/store';
+import { selectDashboards } from './+state/sidebar.reducer';
+import { SidebarActions } from './+state/sidebar.actions';
 
 
 @Component({
@@ -40,34 +43,24 @@ import { Dashboard, UserProfile } from '../models';
 })
 export class SidebarComponent implements OnInit {
   isCollapsed = false;
-  dashboards: Dashboard[] = [];
+  dashboards$ = this.store.select(selectDashboards);
   userProfile$: Observable<UserProfile | null>;
 
   private authService = inject(AuthService);
   private dashboardService = inject(DashboardService);
   private router = inject(Router);
+  private store = inject(Store);
 
   constructor() {
     this.userProfile$ = this.authService.userProfile$;
   }
 
   ngOnInit(): void {
-    this.loadDashboards();
+    this.store.dispatch(SidebarActions.loadDashboards());
   }
 
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
-  }
-
-  loadDashboards(): void {
-    this.dashboardService.getDashboards().subscribe({
-      next: (dashboards: Dashboard[]) => {
-        this.dashboards = dashboards;
-      },
-      error: (error: unknown) => {
-        console.error('Failed to load dashboards:', error);
-      }
-    });
   }
 
   logout(): void {

@@ -10,7 +10,9 @@ import { APP_CONFIG, APP_DI_CONFIG } from './config';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import * as dashboardEffects from './dashboard-page/+state/dashboard.effects';
+import * as sidebarEffects from './sidebar/+state/sidebar.effects';
 import { dashboardFeature } from './dashboard-page/+state/dashboard.reducer';
+import { sidebarFeature } from './sidebar/+state/sidebar.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,8 +21,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([mockApiInterceptor, apiInterceptor, authInterceptor])),
     provideAnimations(),
     provideStore({
-      [dashboardFeature.name]: dashboardFeature.reducer
+      [dashboardFeature.name]: dashboardFeature.reducer,
+      [sidebarFeature.name]: sidebarFeature.reducer
     }),
-    provideEffects(dashboardEffects)
+    provideEffects(dashboardEffects, sidebarEffects)
   ],
 };
