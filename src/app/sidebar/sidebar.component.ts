@@ -43,13 +43,13 @@ import { SidebarActions } from './+state/sidebar.actions';
 })
 export class SidebarComponent implements OnInit {
   isCollapsed = false;
+  private store = inject(Store);
   dashboards$ = this.store.select(selectDashboards);
   userProfile$: Observable<UserProfile | null>;
 
   private authService = inject(AuthService);
   private dashboardService = inject(DashboardService);
   private router = inject(Router);
-  private store = inject(Store);
 
   constructor() {
     this.userProfile$ = this.authService.userProfile$;
@@ -74,7 +74,7 @@ export class SidebarComponent implements OnInit {
     this.dashboardService.getDashboard(dashboardId).subscribe({
       next: (data: Dashboard) => {
         // Navigate to the first tab if it exists
-        const firstTabId = data.tabs && data.tabs.length > 0 ? data.tabs[0].id : ' ';
+        const firstTabId = data.tabs && data.tabs.length > 0 ? data.tabs[0].id : undefined;
         this.router.navigate(['/dashboard', dashboardId, firstTabId]);
       },
       error: () => {

@@ -13,7 +13,7 @@
       <li class="menu-item" 
           *ngFor="let dashboard of dashboards" 
           routerLinkActive="active">
-        <a [routerLink]="['/dashboard', dashboard.id]" (click)="navigateToDashboard(dashboard.id)">
+        <a (click)="navigateToDashboard(dashboard.id)">
           <span class="material-icons-outlined">{{ dashboard.icon }}</span>
           <span class="nav-text" *ngIf="!isCollapsed">{{ dashboard.title }}</span>
         </a>

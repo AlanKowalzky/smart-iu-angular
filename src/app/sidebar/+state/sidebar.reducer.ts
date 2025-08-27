@@ -1,9 +1,9 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { DashboardItem } from '../../models';
+import { Dashboard } from '../../models';
 import { SidebarApiActions, SidebarActions } from './sidebar.actions';
 
 export interface SidebarState {
-  dashboards: DashboardItem[];
+  dashboards: Dashboard[];
   isLoading: boolean;
   error: any | null;
 }

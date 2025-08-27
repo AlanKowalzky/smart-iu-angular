@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { DashboardItem } from '../../models';
+import { Dashboard } from '../../models';
 
 export const SidebarActions = createActionGroup({
   source: 'Sidebar',
@@ -11,7 +11,7 @@ export const SidebarActions = createActionGroup({
 export const SidebarApiActions = createActionGroup({
   source: 'Sidebar API',
   events: {
-    'Load Dashboards Success': props<{ dashboards: DashboardItem[] }>(),
+    'Load Dashboards Success': props<{ dashboards: Dashboard[] }>(),
     'Load Dashboards Failure': props<{ error: any }>(),
   },
 });

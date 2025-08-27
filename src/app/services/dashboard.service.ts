@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Dashboard, DashboardItem, Tab } from '../models';
+import { Dashboard, Tab } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,8 @@ import { Dashboard, DashboardItem, Tab } from '../models';
 export class DashboardService {
   private http = inject(HttpClient);
 
-  getDashboards(): Observable<DashboardItem[]> {
-    return this.http.get<DashboardItem[]>('/api/dashboards');
+  getDashboards(): Observable<Dashboard[]> {
+    return this.http.get<Dashboard[]>('/api/dashboards');
   }
 
   getDashboard(id: string): Observable<Dashboard> {
