@@ -43,8 +43,8 @@ import { SidebarActions } from './+state/sidebar.actions';
 })
 export class SidebarComponent implements OnInit {
   isCollapsed = false;
-  private store = inject(Store);
-  dashboards$ = this.store.select(selectDashboards);
+  private store: Store;
+  dashboards$: Observable<Dashboard[]>;
   userProfile$: Observable<UserProfile | null>;
 
   private authService = inject(AuthService);
@@ -53,6 +53,7 @@ export class SidebarComponent implements OnInit {
 
   constructor() {
     this.userProfile$ = this.authService.userProfile$;
+    this.dashboards$ = this.store.select(selectDashboards);
   }
 
   ngOnInit(): void {

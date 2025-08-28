@@ -40,6 +40,10 @@ export class DashboardComponent implements OnChanges {
   }
 
   onTabChange(tabId: string) {
-    this.router.navigate(['/dashboard', this.dashboard.id, tabId]);
+    if (this.dashboard && this.dashboard.id) {
+      this.router.navigate(['/dashboard', this.dashboard.id, tabId]);
+    } else {
+      console.warn('Cannot navigate: dashboard or dashboard.id is undefined.');
+    }
   }
 }
