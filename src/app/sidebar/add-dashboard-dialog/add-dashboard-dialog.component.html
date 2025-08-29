@@ -2,13 +2,6 @@
 <div mat-dialog-content>
   <form [formGroup]="form">
     <mat-form-field>
-      <mat-label>ID</mat-label>
-      <input matInput formControlName="id" required maxlength="30">
-      <mat-error *ngIf="form.controls.id.hasError('required')">ID is required</mat-error>
-      <mat-error *ngIf="form.controls.id.hasError('maxlength')">ID cannot be more than 30 characters</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" required maxlength="50">
       <mat-error *ngIf="form.controls.title.hasError('required')">Title is required</mat-error>

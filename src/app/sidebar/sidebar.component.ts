@@ -18,6 +18,8 @@ import { Dashboard, UserProfile } from '../models';
 import { Store } from '@ngrx/store';
 import { selectDashboards } from './+state/sidebar.reducer';
 import { SidebarActions } from './+state/sidebar.actions';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AddDashboardDialogComponent } from './add-dashboard-dialog/add-dashboard-dialog.component';
 
 
 @Component({
@@ -38,18 +40,20 @@ import { SidebarActions } from './+state/sidebar.actions';
     MatMenuModule,
     RouterLink,
     RouterLinkActive,
-    CommonModule
+    CommonModule,
+    MatDialogModule
   ]
 })
 export class SidebarComponent implements OnInit {
   isCollapsed = false;
-  private store: Store;
   dashboards$: Observable<Dashboard[]>;
   userProfile$: Observable<UserProfile | null>;
 
+  private store = inject(Store);
   private authService = inject(AuthService);
   private dashboardService = inject(DashboardService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
 
   constructor() {
     this.userProfile$ = this.authService.userProfile$;
@@ -58,6 +62,19 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(SidebarActions.loadDashboards());
+  }
+
+  openAddDashboardDialog(): void {
+    const dialogRef = this.dialog.open(AddDashboardDialogComponent, {
+      width: '400px',
+      data: {} 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.store.dispatch(SidebarActions.createDashboard({ dashboard: result }));
+      }
+    });
   }
 
   toggleSidebar(): void {

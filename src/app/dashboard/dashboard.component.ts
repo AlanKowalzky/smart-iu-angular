@@ -1,49 +1,74 @@
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tab, Dashboard } from '../models';
 import { TabSwitcherComponent } from '../tab-switcher/tabSwitcher.component';
 import { CardListComponent } from '../card-list/cardList.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import { selectIsEditing, selectSelectedDashboard } from '../dashboard-page/+state/dashboard.reducer';
+import { DashboardPageActions } from '../dashboard-page/+state/dashboard.actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, TabSwitcherComponent, CardListComponent],
+  imports: [
+    CommonModule,
+    TabSwitcherComponent,
+    CardListComponent,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnChanges {
-  @Input({ required: true }) dashboard!: Dashboard;
-  @Input() isEditing = false;
+export class DashboardComponent implements OnInit, OnDestroy {
+  private readonly store = inject(Store);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly destroy$ = new Subject<void>();
 
-  activeTabId = '';
-  tabs: Tab[] = [];
+  readonly dashboard$ = this.store.select(selectSelectedDashboard);
+  readonly isEditing = this.store.selectSignal(selectIsEditing);
 
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  activeTabId?: string;
 
-  constructor() {
-    this.activeTabId = this.route.snapshot.paramMap.get('tabId') || '';
+  ngOnInit(): void {
+    this.route.paramMap.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(params => {
+      this.activeTabId = params.get('tabId') ?? undefined;
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dashboard']) {
-      this.tabs = this.dashboard?.tabs || [];
-      if (!this.activeTabId && this.tabs.length > 0) {
-        this.activeTabId = this.tabs[0].id;
-      }
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  get activeTab() {
-    return this.tabs.find(tab => tab.id === this.activeTabId);
+  onTabChange(dashboard: Dashboard, tabId: string) {
+    this.router.navigate(['/dashboard', dashboard.id, tabId]);
   }
 
-  onTabChange(tabId: string) {
-    if (this.dashboard && this.dashboard.id) {
-      this.router.navigate(['/dashboard', this.dashboard.id, tabId]);
-    } else {
-      console.warn('Cannot navigate: dashboard or dashboard.id is undefined.');
-    }
+  enterEditMode(): void {
+    this.store.dispatch(DashboardPageActions.enterEditMode());
+  }
+
+  save(): void {
+    this.store.dispatch(DashboardPageActions.saveDashboard());
+  }
+
+  discard(): void {
+    this.store.dispatch(DashboardPageActions.discardChanges());
+  }
+
+  deleteDashboard(): void {
+    // TODO: Implement confirmation dialog and dispatch delete action
+    console.log('Delete dashboard clicked');
   }
 }

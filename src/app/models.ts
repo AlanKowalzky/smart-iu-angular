@@ -4,6 +4,7 @@ export interface SensorValue {
 }
 
 export interface BaseItem {
+  id: string;
   type: 'sensor' | 'device';
   icon: string;
   label: string;

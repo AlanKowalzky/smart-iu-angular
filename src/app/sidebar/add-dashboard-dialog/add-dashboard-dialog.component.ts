@@ -5,6 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { DashboardPageActions } from '../../dashboard-page/+state/dashboard.actions';
 
 @Component({
   selector: 'app-add-dashboard-dialog',
@@ -21,16 +23,23 @@ import { CommonModule } from '@angular/common';
 })
 export class AddDashboardDialogComponent {
   form: FormGroup;
+  private store = inject(Store);
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddDashboardDialogComponent>,
   ) {
     this.form = this.fb.group({
-      id: ['', [Validators.required, Validators.maxLength(30)]],
       title: ['', [Validators.required, Validators.maxLength(50)]],
       icon: ['', Validators.required]
     });
+  }
+
+  private kebabCase(str: string): string {
+    return str
+      .replace(/([a-z])([A-Z])/g, '$1-$2')
+      .replace(/[\s_]+/g, '-')
+      .toLowerCase();
   }
 
   onCancel(): void {
@@ -39,7 +48,10 @@ export class AddDashboardDialogComponent {
 
   onSave(): void {
     if (this.form.valid) {
-      this.dialogRef.close(this.form.value);
+      const { title, icon } = this.form.value;
+      const id = this.kebabCase(title);
+      this.store.dispatch(DashboardPageActions.createDashboard({ dashboard: { id, title, icon, tabs: [] } }));
+      this.dialogRef.close();
     }
   }
 }
