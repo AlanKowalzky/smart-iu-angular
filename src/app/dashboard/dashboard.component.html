@@ -1,0 +1,32 @@
+<ng-container *ngIf="dashboard$ | async as dashboard">
+  <mat-toolbar>
+    <span>{{ dashboard.title }}</span>
+    <span class="spacer"></span>
+
+    <button *ngIf="!isEditing()" mat-icon-button (click)="enterEditMode()" aria-label="Enter edit mode">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button *ngIf="!isEditing()" mat-icon-button (click)="deleteDashboard()" aria-label="Delete dashboard">
+      <mat-icon>delete</mat-icon>
+    </button>
+
+    <button *ngIf="isEditing()" mat-icon-button (click)="save()" aria-label="Save changes">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button *ngIf="isEditing()" mat-icon-button (click)="discard()" aria-label="Discard changes">
+      <mat-icon>cancel</mat-icon>
+    </button>
+
+  </mat-toolbar>
+
+  <app-tab-switcher
+    [tabs]="dashboard.tabs"
+    [activeTabId]="activeTabId || dashboard.tabs[0]?.id"
+    (tabChange)="onTabChange(dashboard, $event)"
+  ></app-tab-switcher>
+
+  <ng-container *ngFor="let tab of dashboard.tabs">
+    <app-card-list *ngIf="tab.id === (activeTabId || dashboard.tabs[0]?.id)" [cards]="tab.cards"></app-card-list>
+  </ng-container>
+
+</ng-container>

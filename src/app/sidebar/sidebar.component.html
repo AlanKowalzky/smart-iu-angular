@@ -1,0 +1,49 @@
+<aside class="sidebar" [@.disabled]="false" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <span class="material-icons-outlined logo-icon">smart_toy</span>
+    <h2 class="logo-text" *ngIf="!isCollapsed">Smart Home</h2>
+  </div>
+  <button class="toggle-button" (click)="toggleSidebar()">
+    <span class="material-icons-outlined">
+      {{ isCollapsed ? 'chevron_right' : 'chevron_left' }}
+    </span>
+  </button>
+  <nav class="sidebar-menu">
+    <ul *ngIf="dashboards$ | async as dashboards">
+      <li class="menu-item" 
+          *ngFor="let dashboard of dashboards" 
+          routerLinkActive="active">
+        <a (click)="navigateToDashboard(dashboard.id)">
+          <span class="material-icons-outlined">{{ dashboard.icon }}</span>
+          <span class="nav-text" *ngIf="!isCollapsed">{{ dashboard.title }}</span>
+        </a>
+      </li>
+    </ul>
+    <div class="empty-state" *ngIf="(dashboards$ | async)?.length === 0 && !isCollapsed">
+      <p>You don't have any dashboards yet. They'll appear here as soon as you create them.</p>
+    </div>
+  </nav>
+  <div class="spacer"></div>
+  <div class="sidebar-footer">
+    <button class="add-dashboard-btn" (click)="openAddDashboardDialog()" *ngIf="!isCollapsed">
+      <span class="material-icons-outlined">add</span>
+      <span class="nav-text">Add Dashboard</span>
+    </button>
+    <div class="user-profile-footer" *ngIf="userProfile$ | async as profile">
+        <!-- Expanded sidebar -->
+        <ng-container *ngIf="!isCollapsed">
+          <div class="user-avatar">{{ profile.initials }}</div>
+          <div class="user-name">{{ profile.fullName }}</div>
+          <button class="logout-btn" (click)="logout()">
+            <span class="material-icons-outlined">exit_to_app</span>
+            <span>Logout</span>
+          </button>
+        </ng-container>
+        
+        <!-- Collapsed sidebar - avatar as logout button -->
+        <button *ngIf="isCollapsed" class="avatar-logout-btn" (click)="logout()" title="Logout">
+          {{ profile.initials }}
+        </button>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,27 @@
+<div class="card" [ngClass]="card.layout">
+  <div class="card-header">
+    <h3 class="card-title">{{ card.title }}</h3>
+    <!-- Group toggle for cards with multiple devices -->
+    <div *ngIf="devices.length > 1 && card.layout !== 'singleDevice'" class="group-toggle">
+      <label>
+        All
+        <input type="checkbox" [(ngModel)]="groupToggleState" (ngModelChange)="onGroupToggleChange()">
+      </label>
+    </div>
+  </div>
+
+  <div class="items-container">
+    <!-- The ng-container is good for not adding extra elements to the DOM -->
+    <div *ngFor="let item of card.items" class="item">
+        <app-sensor-item
+          *ngIf="isSensor(item)"
+          [sensor]="item"
+        ></app-sensor-item>
+        <app-device-item
+          *ngIf="isDevice(item)"
+          [device]="item"
+          (deviceToggle)="onDeviceToggle(item)"
+        ></app-device-item>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "userName": "admin",
+      "password": "admin",
+      "token": "mock-jwt-token-12345",
+      "fullName": "John Doe",
+      "initials": "JD"
+    }
+  ],
+  "dashboards": [
+    {
+      "id": "overview",
+      "title": "Overview", 
+      "icon": "home",
+      "tabs": [
+        {
+          "id": "overview",
+          "title": "Overview",
+          "cards": [
+            {
+              "id": "server-status",
+              "title": "Server Status",
+              "layout": "verticalLayout",
+              "items": [
+                { "type": "device", "icon": "dns", "label": "JSON Server", "state": true },
+                { "type": "sensor", "icon": "speed", "label": "Port", "value": { "amount": 3000, "unit": "" } }
+              ]
+            },
+            {
+              "id": "balcony-weather",
+              "title": "Balcony",
+              "layout": "horizontalLayout",
+              "items": [
+                { "type": "sensor", "icon": "thermostat", "label": "Temperature", "value": { "amount": 18.7, "unit": "°C" } }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lights",
+      "title": "Lights",
+      "icon": "lightbulb",
+      "tabs": [
+        {
+          "id": "control",
+          "title": "Quick Control",
+          "cards": [
+            {
+              "id": "backend-info",
+              "title": "Backend Info",
+              "layout": "verticalLayout",
+              "items": [
+                { "type": "device", "icon": "storage", "label": "JSON Server Active", "state": true },
+                { "type": "sensor", "icon": "http", "label": "Endpoint", "value": { "amount": 3000, "unit": "localhost" } }
+              ]
+            },
+            {
+              "id": "main-lights",
+              "title": "Main Lights",
+              "layout": "verticalLayout",
+              "items": [
+                { "type": "device", "icon": "lightbulb", "label": "Living Room", "state": true }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
