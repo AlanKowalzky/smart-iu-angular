@@ -11,6 +11,9 @@ import { Store } from '@ngrx/store';
 import { selectIsEditing, selectSelectedDashboard } from '../dashboard-page/+state/dashboard.reducer';
 import { DashboardPageActions } from '../dashboard-page/+state/dashboard.actions';
 import { Subject, takeUntil } from 'rxjs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmation-dialog.component';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +24,9 @@ import { Subject, takeUntil } from 'rxjs';
     CardListComponent,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule, // Add MatDialogModule
+    ConfirmationDialogComponent // Add ConfirmationDialogComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -31,6 +36,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
   private readonly destroy$ = new Subject<void>();
 
   readonly dashboard$ = this.store.select(selectSelectedDashboard);
@@ -68,7 +74,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   deleteDashboard(): void {
-    // TODO: Implement confirmation dialog and dispatch delete action
-    console.log('Delete dashboard clicked');
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: { title: 'Confirm Deletion', message: 'Are you sure you want to delete this dashboard?' }
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter(result => result),
+      take(1)
+    ).subscribe(() => {
+      this.dashboard$.pipe(
+        filter(dashboard => !!dashboard),
+        take(1)
+      ).subscribe(dashboard => {
+        if (dashboard) {
+          this.store.dispatch(DashboardPageActions.deleteDashboard({ dashboardId: dashboard.id }));
+        }
+      });
+    });
   }
 }

@@ -24,7 +24,7 @@ export type CardItem = Sensor | Device;
 
 export interface Card {
   id: string;
-  title: string;
+  title?: string; // Changed to optional
   layout: 'singleDevice' | 'horizontalLayout' | 'verticalLayout';
   items: CardItem[];
 }
