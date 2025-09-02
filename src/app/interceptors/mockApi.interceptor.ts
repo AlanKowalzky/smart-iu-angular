@@ -28,7 +28,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   
-  if (req.url.endsWith('/api/v1/dashboards') && req.method === 'GET') {
+  if (req.url.endsWith('/dashboards') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: [
@@ -38,7 +38,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     }));
   }
 
-  if (req.url.endsWith('/api/v1/dashboards/overview') && req.method === 'GET') {
+  if (req.url.endsWith('/dashboards/overview') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {
@@ -47,7 +47,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     }));
   }
 
-  if (req.url.endsWith('/api/v1/dashboards/lights') && req.method === 'GET') {
+  if (req.url.endsWith('/dashboards/lights') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {

@@ -12,7 +12,7 @@ export interface AppConfig {
 }
 
 export const APP_DI_CONFIG: AppConfig = {
-  useMockApi: false,
+  useMockApi: true,
   apiBaseUrl: 'http://localhost:3000',
   endpoints: {
     // JSON Server endpoints (current)
