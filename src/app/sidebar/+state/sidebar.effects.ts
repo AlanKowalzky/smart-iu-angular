@@ -1,22 +1,22 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, concatMap, of, tap, map } from 'rxjs';
+import { DashboardPageActions } from '../../dashboard-page/+state/dashboard.actions';
 import { DashboardService } from '../../services/dashboard.service';
 import { SidebarActions, SidebarApiActions } from './sidebar.actions';
 
-export const createDashboard$ = createEffect(
-  (actions$ = inject(Actions), dashboardService = inject(DashboardService)) => {
+export const loadDashboards$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    dashboardService = inject(DashboardService)
+  ) => {
     return actions$.pipe(
-      ofType(SidebarActions.createDashboard),
-      switchMap(({ dashboard }) =>
-        dashboardService.createDashboard(dashboard).pipe(
-          map((newDashboard) =>
-            SidebarApiActions.createDashboardSuccess({ dashboard: newDashboard })
-          ),
-          catchError((error) =>
-            of(SidebarApiActions.createDashboardFailure({ error }))
-          )
+      ofType(SidebarActions.loadDashboards),
+      concatMap(() =>
+        dashboardService.getDashboards().pipe(
+          map((dashboards) => SidebarApiActions.loadDashboardsSuccess({ dashboards })),
+          catchError((error) => of(SidebarApiActions.loadDashboardsFailure({ error })))
         )
       )
     );
@@ -24,46 +24,46 @@ export const createDashboard$ = createEffect(
   { functional: true }
 );
 
-export const createDashboardSuccess$ = createEffect(
-  (actions$ = inject(Actions), router = inject(Router)) => {
+
+export const createDashboard$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    dashboardService = inject(DashboardService),
+    router = inject(Router)
+  ) => {
     return actions$.pipe(
-      ofType(SidebarApiActions.createDashboardSuccess),
-      tap(({ dashboard }) => {
-        router.navigate(['/dashboard', dashboard.id]);
-      }),
-      map(() => SidebarActions.loadDashboards())
+      ofType(SidebarActions.createDashboard),
+      concatMap(({ dashboard }) =>
+        dashboardService.createDashboard(dashboard).pipe(
+          concatMap((newDashboard) => [
+            SidebarApiActions.createDashboardSuccess({ dashboard: newDashboard }),
+            DashboardPageActions.createDashboard({ dashboard: newDashboard }),
+          ]),
+          catchError((error) => of(SidebarApiActions.createDashboardFailure({ error })))
+        )
+      )
     );
   },
   { functional: true }
 );
 
 export const deleteDashboard$ = createEffect(
-  (actions$ = inject(Actions), dashboardService = inject(DashboardService)) => {
+  (
+    actions$ = inject(Actions),
+    dashboardService = inject(DashboardService),
+    router = inject(Router)
+  ) => {
     return actions$.pipe(
       ofType(SidebarActions.deleteDashboard),
-      switchMap(({ dashboardId }) =>
+      concatMap(({ dashboardId }) =>
         dashboardService.deleteDashboard(dashboardId).pipe(
-          map(() =>
-            SidebarApiActions.deleteDashboardSuccess({ dashboardId })
-          ),
-          catchError((error) =>
-            of(SidebarApiActions.deleteDashboardFailure({ error }))
-          )
+          concatMap(() => [
+            SidebarApiActions.deleteDashboardSuccess({ dashboardId }),
+            DashboardPageActions.deleteDashboard({ dashboardId }),
+          ]),
+          catchError((error) => of(SidebarApiActions.deleteDashboardFailure({ error })))
         )
       )
-    );
-  },
-  { functional: true }
-);
-
-export const deleteDashboardSuccess$ = createEffect(
-  (actions$ = inject(Actions), router = inject(Router)) => {
-    return actions$.pipe(
-      ofType(SidebarApiActions.deleteDashboardSuccess),
-      tap(() => {
-        router.navigate(['/']);
-      }),
-      map(() => SidebarActions.loadDashboards())
     );
   },
   { functional: true }

@@ -32,6 +32,14 @@ export const sidebarFeature = createFeature({
       ...state,
       isLoading: false,
       error,
+    })),
+    on(SidebarApiActions.createDashboardSuccess, (state, { dashboard }) => ({
+      ...state,
+      dashboards: [...state.dashboards, dashboard],
+    })),
+    on(SidebarApiActions.deleteDashboardSuccess, (state, { dashboardId }) => ({
+      ...state,
+      dashboards: state.dashboards.filter(d => d.id !== dashboardId),
     }))
   ),
 });

@@ -7,15 +7,17 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 250px;
-  background-color: var(--secondary-color, #2c3e50);
-  color: #ecf0f1;
-  transition: width 0.3s ease;
+  width: 280px;
+  background-color: #1e293b;
+  color: #f1f5f9;
+  transition: all 0.3s ease;
   z-index: 1000;
   position: relative;
+  border-right: 1px solid #334155;
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.05);
 
   &.collapsed {
-    width: 60px;
+    width: 72px;
     overflow: visible;
 
     .sidebar-header h3, .user-details {

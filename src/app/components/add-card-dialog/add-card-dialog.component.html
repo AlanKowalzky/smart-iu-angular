@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Select Card Layout</h1>
+<div mat-dialog-content>
+  <p>Choose the layout for your new card:</p>
+  <div class="layout-options">
+    <button mat-raised-button color="primary" (click)="selectLayout('singleDevice')">
+      Single Device
+    </button>
+    <button mat-raised-button color="primary" (click)="selectLayout('horizontalLayout')">
+      Horizontal Layout
+    </button>
+    <button mat-raised-button color="primary" (click)="selectLayout('verticalLayout')">
+      Vertical Layout
+    </button>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+</div>

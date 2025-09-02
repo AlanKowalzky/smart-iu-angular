@@ -7,11 +7,11 @@ import { authInterceptor } from './interceptors/auth.interceptor';
 import { mockApiInterceptor } from './interceptors/mockApi.interceptor';
 import { apiInterceptor } from './interceptors/api.interceptor';
 import { APP_CONFIG, APP_DI_CONFIG } from './config';
-import { provideStore } from '@ngrx/store';
+import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import * as dashboardEffects from './dashboard-page/+state/dashboard.effects';
-import * as sidebarEffects from './sidebar/+state/sidebar.effects';
-import { dashboardFeature } from './dashboard-page/+state/dashboard.reducer';
+import { DashboardEffects } from './dashboard-page/+state/dashboard.effects';
+import { loadDashboards$, createDashboard$, deleteDashboard$ } from './sidebar/+state/sidebar.effects';
+import { dashboardFeatureKey, dashboardReducer } from './dashboard-page/+state/dashboard.reducer';
 import { sidebarFeature } from './sidebar/+state/sidebar.reducer';
 
 export const appConfig: ApplicationConfig = {
@@ -20,10 +20,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([mockApiInterceptor, apiInterceptor, authInterceptor])),
     provideAnimations(),
-    provideStore({
-      [dashboardFeature.name]: dashboardFeature.reducer,
-      [sidebarFeature.name]: sidebarFeature.reducer
-    }),
-    provideEffects(dashboardEffects, sidebarEffects)
+    provideStore(),
+    provideState(dashboardFeatureKey, dashboardReducer),
+    provideState(sidebarFeature.name, sidebarFeature.reducer),
+    provideEffects(DashboardEffects, { loadDashboards$, createDashboard$, deleteDashboard$ })
   ],
 };

@@ -9,6 +9,8 @@ import { Store, select } from '@ngrx/store';
 import { selectSelectedDashboard } from './dashboard.reducer';
 import { Router } from '@angular/router';
 import { SidebarActions } from '../../sidebar/+state/sidebar.actions';
+import { selectDashboards } from '../../sidebar/+state/sidebar.reducer';
+import { emptyProps } from '@ngrx/store';
 
 @Injectable()
 export class DashboardEffects {
@@ -94,7 +96,7 @@ export class DashboardEffects {
         map(() => DashboardPageActions.exitEditMode())
       );
     },
-    { functional: true }
+    { functional: true, dispatch: false }
   );
 
   discardChanges = createEffect(
@@ -104,7 +106,7 @@ export class DashboardEffects {
         map(() => DashboardPageActions.exitEditMode())
       );
     },
-    { functional: true }
+    { functional: true, dispatch: false }
   );
 
   createDashboardSuccess = createEffect(
@@ -125,14 +127,18 @@ export class DashboardEffects {
       return actions$.pipe(
         ofType(DashboardApiActions.deleteDashboardSuccess),
         tap(() => store.dispatch(SidebarActions.loadDashboards())),
-        // TODO: Navigate to the first available dashboard or home page
-        map(() => {
-          // For now, navigate to a default route or handle based on available dashboards
-          router.navigate(['/']); // Navigate to home or a default dashboard
-          return emptyProps();
-        })
+        withLatestFrom(store.pipe(select(selectDashboards))),
+        tap(([action, dashboards]) => {
+          if (dashboards.length > 0) {
+            const firstDashboard = dashboards[0];
+            router.navigate(['/dashboard', firstDashboard.id, firstDashboard.tabs[0]?.id || '']);
+          } else {
+            router.navigate(['/']);
+          }
+        }),
+        map(() => emptyProps())
       );
     },
-    { functional: true }
+    { functional: true, dispatch: false }
   );
 }

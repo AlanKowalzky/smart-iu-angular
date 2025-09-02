@@ -1,8 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-html, body { height: 100%; }
+html, body { 
+  height: 100%; 
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f5f7fa; }
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Material Design Overrides */
+.mat-mdc-button-touch-target {
+  display: none !important;
+}
+
+.mat-mdc-icon-button {
+  --mdc-icon-button-state-layer-size: 40px !important;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
 
 /* Active device highlighting */
 .active-highlight {

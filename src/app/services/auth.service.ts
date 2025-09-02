@@ -21,7 +21,7 @@ export class AuthService {
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     if (this.config.useMockApi) {
-      return this.http.post<LoginResponse>('/api/user/login', credentials).pipe(
+      return this.http.post<LoginResponse>('/api/auth/login', credentials).pipe(
         tap(response => {
           this.tokenService.saveToken(response.token);
         }),
@@ -30,7 +30,7 @@ export class AuthService {
         })
       );
     } else {
-      return this.http.get<{ userName: string; password: string; token: string }[]>('/users').pipe(
+      return this.http.get<{ userName: string; password: string; token: string }[]>(this.config.endpoints.login).pipe(
         map(users => {
           const user = users.find(u => u.userName === credentials.userName && u.password === credentials.password);
           if (user) {
@@ -49,7 +49,7 @@ export class AuthService {
 
   loadProfile(): Observable<UserProfile> {
     if (this.config.useMockApi) {
-      return this.http.get<UserProfile>('/api/user/profile').pipe(
+      return this.http.get<UserProfile>('/api/auth/profile').pipe(
         tap(profile => {
           this.userProfileSubject.next(profile);
           this.isAuthenticatedSubject.next(true);
@@ -60,7 +60,7 @@ export class AuthService {
         })
       );
     } else {
-      return this.http.get<{ fullName: string; initials: string }[]>('/users', {
+      return this.http.get<{ fullName: string; initials: string }[]>(this.config.endpoints.profile, {
         params: { token: this.tokenService.getToken() || '' }
       }).pipe(
         map(users => {

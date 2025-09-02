@@ -1,6 +1,9 @@
 <div class="card" [ngClass]="card.layout">
   <div class="card-header">
     <h3 class="card-title">{{ card.title }}</h3>
+    <button mat-icon-button *ngIf="isEditing" (click)="openEditCardContentDialog()" class="edit-button">
+      <mat-icon>more_vert</mat-icon>
+    </button>
     <!-- Group toggle for cards with multiple devices -->
     <div *ngIf="devices.length > 1 && card.layout !== 'singleDevice'" class="group-toggle">
       <label>

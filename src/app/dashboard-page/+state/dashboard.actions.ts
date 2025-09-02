@@ -1,8 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Dashboard } from '../../models';
-
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { CardItem, Dashboard } from '../../models';
+import { Dashboard, CardItem } from '../../models';
 
 export const DashboardPageActions = createActionGroup({
   source: 'Dashboard Page',
@@ -16,6 +13,7 @@ export const DashboardPageActions = createActionGroup({
     'Delete Dashboard': props<{ dashboardId: string }>(),
     'Add Tab': props<{ title: string }>(),
     'Remove Tab': props<{ tabId: string }>(),
+    'Rename Tab': props<{ tabId: string, newTitle: string }>(),
     'Reorder Tab': props<{ tabId: string, direction: 'left' | 'right' }>(),
     'Add Card': props<{ tabId: string, layout: 'singleDevice' | 'horizontalLayout' | 'verticalLayout' }>(),
     'Remove Card': props<{ tabId: string, cardId: string }>(),

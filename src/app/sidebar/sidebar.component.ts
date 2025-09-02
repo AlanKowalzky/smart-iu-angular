@@ -19,7 +19,7 @@ import { Store } from '@ngrx/store';
 import { selectDashboards } from './+state/sidebar.reducer';
 import { SidebarActions } from './+state/sidebar.actions';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AddDashboardDialogComponent } from './add-dashboard-dialog/add-dashboard-dialog.component';
+import { AddDashboardDialogComponent } from './add-dashboard-dialog/addDashboardDialog.component';
 
 
 @Component({

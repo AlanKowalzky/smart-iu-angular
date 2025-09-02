@@ -1,3 +1,23 @@
 <div class="card-grid">
-  <app-card *ngFor="let card of cards" [card]="card"></app-card>
+  <ng-container *ngFor="let card of cards; let i = index">
+    <div class="card-item-wrapper">
+      <app-card [card]="card" [isEditing]="isEditing()"></app-card>
+      <div class="card-actions" *ngIf="isEditing()">
+        <button mat-icon-button (click)="onRemoveCard(card.id)" title="Remove Card">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onReorderCard(card.id, i - 1)" [disabled]="i === 0" title="Move Up">
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onReorderCard(card.id, i + 1)" [disabled]="i === cards.length - 1" title="Move Down">
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+        <mat-form-field *ngIf="cards.length > 1">
+          <mat-label>Move to index</mat-label>
+          <input matInput type="number" [(ngModel)]="newIndex" (change)="onReorderCard(card.id, newIndex !== null ? newIndex - 1 : i)" min="1" [max]="cards.length">
+        </mat-form-field>
+      </div>
+    </div>
+  </ng-container>
+  <button mat-raised-button color="primary" *ngIf="isEditing()" (click)="onAddCard()">Add Card</button>
 </div>

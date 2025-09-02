@@ -12,8 +12,10 @@ import { selectIsEditing, selectSelectedDashboard } from '../dashboard-page/+sta
 import { DashboardPageActions } from '../dashboard-page/+state/dashboard.actions';
 import { Subject, takeUntil } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmationDialog.component';
 import { filter, take } from 'rxjs/operators';
+import { SidebarActions } from '../sidebar/+state/sidebar.actions';
+import { AddTabDialogComponent } from './add-tab-dialog/addTabDialog.component'; // New import
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +28,6 @@ import { filter, take } from 'rxjs/operators';
     MatButtonModule,
     MatIconModule,
     MatDialogModule, // Add MatDialogModule
-    ConfirmationDialogComponent // Add ConfirmationDialogComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -88,9 +89,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
         take(1)
       ).subscribe(dashboard => {
         if (dashboard) {
-          this.store.dispatch(DashboardPageActions.deleteDashboard({ dashboardId: dashboard.id }));
+          this.store.dispatch(SidebarActions.deleteDashboard({ dashboardId: dashboard.id }));
         }
       });
     });
+  }
+
+  onAddTab(): void {
+    this.dashboard$.pipe(
+      filter(dashboard => !!dashboard),
+      take(1)
+    ).subscribe(dashboard => {
+      const dialogRef = this.dialog.open(AddTabDialogComponent, {
+        width: '400px',
+        data: { dashboard: dashboard }
+      });
+
+      dialogRef.afterClosed().subscribe(title => {
+        if (title) {
+          this.store.dispatch(DashboardPageActions.addTab({ title }));
+        }
+      });
+    });
+  }
+
+  onRemoveTab(tabId: string): void {
+    this.store.dispatch(DashboardPageActions.removeTab({ tabId }));
+  }
+
+  onRenameTab(event: { tabId: string, newTitle: string }): void {
+    this.store.dispatch(DashboardPageActions.renameTab(event));
+  }
+
+  onReorderTab(event: { tabId: string, direction: 'left' | 'right' }): void {
+    this.store.dispatch(DashboardPageActions.reorderTab(event));
+  }
+
+  onAddCard(event: { tabId: string, layout: 'singleDevice' | 'horizontalLayout' | 'verticalLayout' }): void {
+    this.store.dispatch(DashboardPageActions.addCard(event));
+  }
+
+  onRemoveCard(event: { tabId: string, cardId: string }): void {
+    this.store.dispatch(DashboardPageActions.removeCard(event));
+  }
+
+  onReorderCard(event: { tabId: string, cardId: string, newIndex: number }): void {
+    this.store.dispatch(DashboardPageActions.reorderCard(event));
   }
 }

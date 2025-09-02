@@ -21,12 +21,23 @@
 
   <app-tab-switcher
     [tabs]="dashboard.tabs"
-    [activeTabId]="activeTabId || dashboard.tabs[0]?.id"
+    [activeTabId]="activeTabId || dashboard.tabs[0].id || ''"
     (tabChange)="onTabChange(dashboard, $event)"
+    (addTab)="onAddTab()"
+    (removeTab)="onRemoveTab($event)"
+    (renameTab)="onRenameTab($event)"
+    (reorderTab)="onReorderTab($event)"
   ></app-tab-switcher>
 
   <ng-container *ngFor="let tab of dashboard.tabs">
-    <app-card-list *ngIf="tab.id === (activeTabId || dashboard.tabs[0]?.id)" [cards]="tab.cards"></app-card-list>
+    <app-card-list
+      *ngIf="tab.id === (activeTabId || dashboard.tabs[0].id || '')"
+      [cards]="tab.cards"
+      [activeTabId]="activeTabId || dashboard.tabs[0].id || ''"
+      (addCard)="onAddCard($event)"
+      (removeCard)="onRemoveCard($event)"
+      (reorderCard)="onReorderCard($event)"
+    ></app-card-list>
   </ng-container>
 
 </ng-container>

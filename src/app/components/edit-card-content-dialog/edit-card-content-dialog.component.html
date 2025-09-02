@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Edit Card Content</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Card Title (Optional)</mat-label>
+    <input matInput formControlName="title">
+  </mat-form-field>
+
+  <h3>Current Items:</h3>
+  <div *ngIf="currentCard.items.length === 0" class="empty-state">
+    No items in this card. Add some below!
+  </div>
+  <div *ngFor="let item of currentCard.items" class="item-row">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span>{{ item.label }}</span>
+    <button mat-icon-button color="warn" (click)="removeItem(item.id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <h3>Add New Item:</h3>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Select an Entity</mat-label>
+    <mat-select formControlName="selectedEntity">
+      <mat-option *ngFor="let entity of (availableEntities$ | async)" [value]="entity">
+        {{ entity.label }} ({{ entity.type }})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addSelectedItem()" [disabled]="!form.get('selectedEntity')?.value">
+    Add Selected
+  </button>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

@@ -11,7 +11,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  if (req.url.endsWith('/api/user/login') && req.method === 'POST') {
+  if (req.url.endsWith('/api/auth/login') && req.method === 'POST') {
     const { userName, password } = req.body as LoginRequest;
     if (userName === 'admin' && password === 'admin') {
       return of(new HttpResponse({ status: 200, body: { token: 'mock-jwt-token-12345' } }));
@@ -20,7 +20,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   
-  if (req.url.endsWith('/api/user/profile') && req.method === 'GET') {
+  if (req.url.endsWith('/api/auth/profile') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: { fullName: 'John Doe', initials: 'JD' }
@@ -28,7 +28,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   
-  if (req.url.endsWith('/api/dashboards') && req.method === 'GET') {
+  if (req.url.endsWith('/api/v1/dashboards') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: [
@@ -38,7 +38,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     }));
   }
 
-  if (req.url.endsWith('/api/dashboards/overview') && req.method === 'GET') {
+  if (req.url.endsWith('/api/v1/dashboards/overview') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {
@@ -47,7 +47,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     }));
   }
 
-  if (req.url.endsWith('/api/dashboards/lights') && req.method === 'GET') {
+  if (req.url.endsWith('/api/v1/dashboards/lights') && req.method === 'GET') {
     return of(new HttpResponse({
       status: 200,
       body: {

@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "userName": "admin",
       "password": "admin",
       "token": "mock-jwt-token-12345",
@@ -11,9 +11,6 @@
   ],
   "dashboards": [
     {
-      "id": "overview",
-      "title": "Overview", 
-      "icon": "home",
       "tabs": [
         {
           "id": "overview",
@@ -24,8 +21,21 @@
               "title": "Server Status",
               "layout": "verticalLayout",
               "items": [
-                { "type": "device", "icon": "dns", "label": "JSON Server", "state": true },
-                { "type": "sensor", "icon": "speed", "label": "Port", "value": { "amount": 3000, "unit": "" } }
+                {
+                  "type": "device",
+                  "icon": "dns",
+                  "label": "JSON Server",
+                  "state": true
+                },
+                {
+                  "type": "sensor",
+                  "icon": "speed",
+                  "label": "Port",
+                  "value": {
+                    "amount": 3000,
+                    "unit": ""
+                  }
+                }
               ]
             },
             {
@@ -33,12 +43,21 @@
               "title": "Balcony",
               "layout": "horizontalLayout",
               "items": [
-                { "type": "sensor", "icon": "thermostat", "label": "Temperature", "value": { "amount": 18.7, "unit": "°C" } }
+                {
+                  "type": "sensor",
+                  "icon": "thermostat",
+                  "label": "Temperature",
+                  "value": {
+                    "amount": 18.7,
+                    "unit": "°C"
+                  }
+                }
               ]
             }
           ]
         }
-      ]
+      ],
+      "id": "overview"
     },
     {
       "id": "lights",
@@ -54,8 +73,21 @@
               "title": "Backend Info",
               "layout": "verticalLayout",
               "items": [
-                { "type": "device", "icon": "storage", "label": "JSON Server Active", "state": true },
-                { "type": "sensor", "icon": "http", "label": "Endpoint", "value": { "amount": 3000, "unit": "localhost" } }
+                {
+                  "type": "device",
+                  "icon": "storage",
+                  "label": "JSON Server Active",
+                  "state": true
+                },
+                {
+                  "type": "sensor",
+                  "icon": "http",
+                  "label": "Endpoint",
+                  "value": {
+                    "amount": 3000,
+                    "unit": "localhost"
+                  }
+                }
               ]
             },
             {
@@ -63,7 +95,12 @@
               "title": "Main Lights",
               "layout": "verticalLayout",
               "items": [
-                { "type": "device", "icon": "lightbulb", "label": "Living Room", "state": true }
+                {
+                  "type": "device",
+                  "icon": "lightbulb",
+                  "label": "Living Room",
+                  "state": true
+                }
               ]
             }
           ]

@@ -1,9 +1,40 @@
 <nav class="tab-switcher">
-  <button
-    *ngFor="let tab of tabs"
-    [class.active]="tab.id === activeTabId"
-    (click)="tabChange.emit(tab.id)"
-  >
-    {{ tab.title }}
+  <ng-container *ngFor="let tab of tabs; let i = index">
+    <div class="tab-item">
+      <ng-container *ngIf="editingTabId !== tab.id">
+        <button
+          [class.active]="tab.id === activeTabId"
+          (click)="tabChange.emit(tab.id)"
+        >
+          {{ tab.title }}
+        </button>
+        <div class="tab-actions" *ngIf="isEditing()">
+          <button mat-icon-button (click)="startEditing(tab.id, tab.title)" title="Rename Tab">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="reorderTab.emit({ tabId: tab.id, direction: 'left' })" [disabled]="i === 0" title="Move Left">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-icon-button (click)="reorderTab.emit({ tabId: tab.id, direction: 'right' })" [disabled]="i === tabs.length - 1" title="Move Right">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+          <button mat-icon-button (click)="removeTab.emit(tab.id)" title="Remove Tab">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="editingTabId === tab.id">
+        <input [(ngModel)]="newTabTitle" (keyup.enter)="saveRename(tab.id)" (keyup.escape)="cancelEditing()" />
+        <button mat-icon-button (click)="saveRename(tab.id)" title="Save Rename">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button (click)="cancelEditing()" title="Cancel Rename">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </ng-container>
+    </div>
+  </ng-container>
+  <button mat-icon-button *ngIf="isEditing()" (click)="addTab.emit()" title="Add Tab">
+    <mat-icon>add</mat-icon>
   </button>
 </nav>
